@@ -28,7 +28,17 @@ class Program
             //Console.WriteLine("F");
             letter = "F";
         }
-        Console.WriteLine($"Your Letter Grade Is: {letter}");
+        
+        // print grade sign
+        string sign;
+        if (percentage % 10 >= 7) {
+            sign = "+";
+        } else if (percentage % 10 < 3) {
+            sign = "-";
+        } else {
+            sign = "";
+        }
+        Console.WriteLine($"Your Letter Grade Is: {letter}{sign}");
         
         // determine if user passed the course
         if (percentage >= 70) {
