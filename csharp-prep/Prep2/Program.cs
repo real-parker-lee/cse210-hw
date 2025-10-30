@@ -31,9 +31,9 @@ class Program
         
         // print grade sign
         string sign;
-        if (percentage % 10 >= 7) {
+        if (percentage % 10 >= 7 && !(percentage >= 90 || percentage < 60)) {
             sign = "+";
-        } else if (percentage % 10 < 3) {
+        } else if (percentage % 10 < 3 && !(percentage < 60)) {
             sign = "-";
         } else {
             sign = "";
