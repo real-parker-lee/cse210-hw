@@ -2,6 +2,11 @@ using System;
 
 class Program
 {
+    static void TestValues(int x, float y, double z)
+    {
+        Console.WriteLine($"values are: x={x}, y={y}, z={z}");
+    }
+    
     static void Main(string[] args)
     {
 //         Console.WriteLine("Hello Sandbox World!");
@@ -57,6 +62,6 @@ class Program
             Console.WriteLine($"number is {n}");
         }
         
-        
+        Program.TestValues(10, (float)123.456, 3.1415926);
     }
 }
