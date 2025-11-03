@@ -26,5 +26,20 @@ class Program
         {
             Console.WriteLine($"{i}");
         }
+        
+        bool done = false;
+        // do-while loop: condition checked at the End of the loop.
+        do
+        {
+            Console.Write("input age: ");
+            // if you're worried about performance, avoid declaring variables within loops.
+            int age = int.Parse(Console.ReadLine());
+            
+            if (age >= 0 && age <= 125)
+            {
+                done = true;
+                Console.WriteLine($"Super age: {age}");
+            }
+        } while (!done);
     }
 }
