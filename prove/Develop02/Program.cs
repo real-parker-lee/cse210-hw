@@ -15,14 +15,23 @@ class Program
             switch(selection)
             {
                 case 1:
+                    // create new entry
                     break;
+                    
                 case 2:
+                    // call journal.Display()
                     break;
+                    
                 case 3:
-                    break
-                case 4:
+                    // save to file
                     break;
+                    
+                case 4:
+                    // load from file
+                    break;
+                    
                 case 5:
+                    //quit
                     done = true;
                     break;
             }
