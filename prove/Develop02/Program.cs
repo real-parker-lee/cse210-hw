@@ -5,6 +5,7 @@ class Program
 {
     static void Main(string[] args)
     {
+        // init global values
         Menu menu = new Menu();
         int selection;
         bool done = false;
@@ -31,6 +32,7 @@ class Program
                     break;
                     
                 case 2:
+                    Console.WriteLine($"Displaying {journal.EntryCount()} entries:\n");
                     journal.Display();
                     break;
                     

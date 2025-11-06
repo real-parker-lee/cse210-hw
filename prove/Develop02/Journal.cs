@@ -37,7 +37,7 @@ public class Journal
     
     // get a random prompt
     Random rand = new Random();
-    string thisPrompt = _prompts[rand.Next(0, _prompts.Count + 1)];
+    string thisPrompt = _prompts[rand.Next(0, _prompts.Count)];
     
     // get user input for content
     Console.WriteLine($"{thisPrompt}:");
@@ -56,5 +56,10 @@ public class Journal
   public string GetCurrentPath()
   {
     return _currentPath;
+  }
+  
+  public int EntryCount()
+  {
+    return _entries.Count;
   }
 }
