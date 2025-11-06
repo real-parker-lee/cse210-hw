@@ -21,7 +21,7 @@ class Menu
     do
     {
       choice = int.Parse(Console.ReadLine());
-    } while (choice < 1 || choice > 5)
+    } while (choice < 1 || choice > 5);
     
     return choice;
   }
