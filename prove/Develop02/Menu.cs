@@ -10,12 +10,19 @@ class Menu
     "5. Quit"
   };
   
-  public void ProcessMenu()
+  public int ProcessMenu()
   {
     foreach (string s in _menuStrings)
     {
       Console.WriteLine(s);
     }
     
+    int choice = 0;
+    do
+    {
+      choice = int.Parse(Console.ReadLine());
+    } while (choice < 1 || choice > 5)
+    
+    return choice;
   }
 }
