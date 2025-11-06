@@ -16,7 +16,13 @@ class Program
         job2._startYear = 1950;
         job2._endYear = 2030;
         
-        Console.WriteLine($"{job1._company}");
-        Console.WriteLine($"{job2._company}");
+        Resume myResume = new Resume();
+        myResume._jobs.Add(job1);
+        myResume._jobs.Add(job2);
+        
+        // Console.WriteLine($"{job1._company}");
+        // Console.WriteLine($"{job2._company}");
+        
+        Console.WriteLine($"{myResume._jobs[0]._company}");
     }
 }
