@@ -17,6 +17,7 @@ class Program
         job2._endYear = 2030;
         
         Resume myResume = new Resume();
+        myResume._name = "Parker Lee";
         myResume._jobs.Add(job1);
         myResume._jobs.Add(job2);
         
@@ -25,6 +26,6 @@ class Program
         
         // Console.WriteLine($"{myResume._jobs[0]._company}");
         
-        
+        myResume.Display();
     }
 }
