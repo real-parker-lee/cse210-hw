@@ -23,6 +23,8 @@ class Program
         // Console.WriteLine($"{job1._company}");
         // Console.WriteLine($"{job2._company}");
         
-        Console.WriteLine($"{myResume._jobs[0]._company}");
+        // Console.WriteLine($"{myResume._jobs[0]._company}");
+        
+        
     }
 }
