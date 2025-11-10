@@ -42,13 +42,13 @@ class Program
                     savePath = Console.ReadLine();
                     if ("" == savePath)
                     {
-                        //journal.WriteToFile();
+                        journal.WriteToFile();
                         Console.WriteLine("placeholder: saving to loaded file\n");
                     }
                     else
                     {
                         Console.WriteLine($"placeholder: saving to new path: {savePath}");
-                        //journal.WriteToFile(savePath);
+                        journal.WriteToFile(savePath);
                     }
                     
                     Console.WriteLine($"Saved journal to path: {journal.GetCurrentPath()}\n");
@@ -58,7 +58,7 @@ class Program
                     // load from file
                     Console.Write("Enter path to journal: ");
                     loadPath = Console.ReadLine();
-                    // journal.ReadFromFile(loadPath);
+                    journal.ReadFromFile(loadPath);
                     Console.WriteLine($"Successfully loaded journal at {loadPath}\n");
                     break;
                     
