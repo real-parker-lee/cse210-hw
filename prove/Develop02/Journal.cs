@@ -1,8 +1,10 @@
+using System.IO;
+
 public class Journal
 {
   protected List<Entry> _entries = new List<Entry>();
   protected List<string> _prompts = new List<string>();
-  protected string _currentPath;
+  protected string _currentPath = "./journal.txt";
   
   public void Display()
   {
@@ -12,28 +14,52 @@ public class Journal
     }
   }
   
-  // public void ReadFromFile(string path)
-  // {
-  //   // read data from file, then set _currentPath so that saving is more streamlined later.
-  // }
+  public void ReadFromFile(string path)
+  {
+    _currentPath = path;
+    string[] lines = System.IO.File.ReadAllLines(path);
+    // process the lines into journal entries
+    foreach (string line in lines)
+    {
+      // split by | to get data
+      string[] fields = line.Split("|");
+      
+      // create new entry and add to list
+      Entry e = new Entry();
+      e.Make(fields[2], fields[0], fields[1]);
+      _entries.Add(e);
+    }
+  }
   
-  // public void WriteToFile()
-  // {
-  //   // use _currentPath as file to save to.
-  // }
+  public void WriteToFile()
+  {
+    using (StreamWriter output = new StreamWriter(_currentPath))
+    {
+      foreach (Entry e in _entries)
+      {
+        output.WriteLine(e.Serialize());
+      }
+    }
+  }
   
-  // public void WriteToFile(string path)
-  // {
-  //   // specify new file to save to.
-  //   // NOTE: also should set _currentPath to the new value.
-  // }
+  public void WriteToFile(string path)
+  {
+    _currentPath = path;
+    using (StreamWriter output = new StreamWriter(_currentPath))
+    {
+      foreach (Entry e in _entries)
+      {
+        output.WriteLine(e.Serialize());
+      }
+    }
+  }
   
   public void AddEntry()
   {
     Entry e = new Entry();
     // get date
-    // for now, using a random string
-    string date = "TODAY";
+    DateTime now = DateTime.Now;
+    string date = now.ToShortDateString();
     
     // get a random prompt
     Random rand = new Random();

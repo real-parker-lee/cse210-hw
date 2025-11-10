@@ -11,6 +11,13 @@ public class Entry
     Console.WriteLine("-----------------\n");
   }
   
+  // serialize is responsible for formatting the file representation of an entry.
+  public string Serialize()
+  {
+    // TODO: escape pipe characters in _content
+    return $"{_date}|{_prompt}|{_content}";
+  }
+  
   public void Make(string content, string date, string prompt)
   {
     _prompt = prompt;
