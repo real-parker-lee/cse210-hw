@@ -7,7 +7,11 @@ class Program
     //Circle circ = new Circle();
     
     //circ._radius = 10;
-    Circle circ = new Circle(10.0);
-    Console.WriteLine(circ.GetCircleArea());
+    Circle circ1 = new Circle(10.0);
+    Console.WriteLine(circ1.GetCircleArea());
+    
+    Circle circ2 = new Circle();
+    circ2.SetRadius(10.0);
+    Console.WriteLine(circ2.GetCircleArea());
   }
 }
