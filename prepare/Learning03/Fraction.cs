@@ -5,20 +5,20 @@ class Fraction
   
   public Fraction()
   {
-    _numer = 1;
-    _denom = 1;
+    SetNumerator(1);
+    SetDenominator(1);
   }
   
   public Fraction(int num)
   {
-    _numer = num;
-    _denom = 1;
+    SetNumerator(num);
+    SetDenominator(1);
   }
   
   public Fraction(int num, int den)
   {
-    _numer = num;
-    _denom = den;
+    SetNumerator(num);
+    SetDenominator(den);
   }
   
   // getters and setters
@@ -42,5 +42,20 @@ class Fraction
     return _denom;
   }
   
+  public string GetFractionString()
+  {
+    if (_denom == 1)
+    {
+      return $"{GetNumerator()}";
+    }
+    else
+    {
+      return $"{GetNumerator()}/{GetDenominator()}";
+    }
+  }
   
+  public double GetDecimalValue()
+  {
+    return GetNumerator() / GetDenominator();
+  }
 }
