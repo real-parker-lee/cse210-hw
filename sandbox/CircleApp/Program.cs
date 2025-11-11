@@ -3,12 +3,11 @@ class Program
 {
   public static void Main()
   {
-    Console.WriteLine("Hello CircleApp World!")
-    Circle circ = new Circle();
+    Console.WriteLine("Hello CircleApp World!");
+    //Circle circ = new Circle();
     
     //circ._radius = 10;
-    circ.SetRadius(10);
-    
+    Circle circ = new Circle(10.0);
     Console.WriteLine(circ.GetCircleArea());
   }
 }
