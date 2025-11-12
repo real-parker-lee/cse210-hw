@@ -29,6 +29,16 @@ class Circle
   
   public double GetCircleArea()
   {
-    return 3.1415926535897932 * _radius * _radius;
+    return Math.PI * _radius * _radius;
+  }
+  
+  public double GetDiameter()
+  {
+    return 2.0 * _radius;
+  }
+  
+  public double GetCircumference()
+  {
+    return Math.PI * GetDiameter();
   }
 }
