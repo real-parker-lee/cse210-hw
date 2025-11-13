@@ -15,7 +15,7 @@ class Program
         {
             Console.WriteLine("Press Enter to remove three words, or enter 'q' or 'quit' to exit.\n");
             scriptures[0].PrintPrompt();
-            Console.WriteLine("\n");
+            //Console.WriteLine("\n");
             
             // input validation
             do
@@ -33,6 +33,7 @@ class Program
             if (resp != "q" && resp != "quit")
             {
                 scriptures[0].HideRandomWord();
+                Console.Write("\n");
             }
         }
     }

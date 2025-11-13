@@ -2,7 +2,7 @@ class Scripture
 {
   private List<Word> _words = new List<Word>();
   private Reference _ref;
-  private int _hideDelta = 1;
+  private int _hideDelta = 3;
   
   public Scripture(Reference r, string content) // pass in full string which gets split by spaces into the word list.
   {
@@ -41,9 +41,22 @@ class Scripture
     Console.WriteLine("\n");
   }
   
+  public int CountShown()
+  {
+    int count = 0;
+    foreach (Word w in GetWords())
+    {
+      if (!w.IsHidden())
+      {
+        count++;
+      }
+    }
+    return count;
+  }
+  
   public void HideRandomWord()
   {
-    int counter = _hideDelta;
+    int counter = Math.Min(_hideDelta, CountShown());
     int idx;
     while (counter > 0)
     {
