@@ -17,6 +17,13 @@ class Program
             scriptures[0].PrintPrompt();
             //Console.WriteLine("\n");
             
+            // check if the game can even be progressed.
+            if (scriptures[0].CountShown() == 0)
+            {
+                Console.WriteLine("No more words to hide. Exiting.");
+                break;
+            }
+            
             // input validation
             do
             {

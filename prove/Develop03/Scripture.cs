@@ -48,7 +48,7 @@ class Scripture
     {
       if (!w.IsHidden())
       {
-        count++;
+        ++count;
       }
     }
     return count;
@@ -58,7 +58,7 @@ class Scripture
   {
     int counter = Math.Min(_hideDelta, CountShown());
     int idx;
-    while (counter > 0)
+    while (counter >= 1)
     {
       // pick random element from list
       Random rand = new Random();
@@ -76,5 +76,11 @@ class Scripture
         counter--;
       }
     }
+    //Console.WriteLine($"words shown: {CountShown()}");
+  }
+  
+  public int GetHideDelta()
+  {
+    return _hideDelta;
   }
 }
