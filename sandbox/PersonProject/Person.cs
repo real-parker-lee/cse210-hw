@@ -2,6 +2,7 @@ class Person
 {
   private string _firstName;
   private string _lastName;
+  //protected int _age; // Use this if you want subclasses to be able to access this field.
   private int _age;
   private int _weight;
   
@@ -9,8 +10,8 @@ class Person
   {
     _firstName = fn;
     _lastName = ln;
-    _age = a;
-    _weight = w;
+    SetWeight(w);
+    SetAge(a);
   }
   
   public string PersonInformation()

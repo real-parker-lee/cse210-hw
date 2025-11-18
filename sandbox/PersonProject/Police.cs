@@ -5,6 +5,7 @@ class Police : Person
   public Police(string weapons, string fn, string ln, int a, int w)
   : base(fn, ln, a, w)
   {
+    // _age = a; // WARNING: bypasses parent class setter method.
     _weapons = weapons;
   }
   
