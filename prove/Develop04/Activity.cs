@@ -4,7 +4,9 @@ public class Activity
   private string _endMessage = "You did well.";
   private string _durationPrompt = "How many seconds would you like to spend on this activity? > ";
   private string _description; // set by subclasses.
-  private int _duration; // set upon prompting.
+  // timer related things
+  private int[] _timerPos = new int[2]; // LEFTMOST DIGIT
+  private int _duration; // set upon prompting. units in seconds
   // throbber related things
   private string[] _throbberAnim = {"/", "|", "\\", "-"};
   private int[] _throbberPos = new int[2];
@@ -81,10 +83,51 @@ public class Activity
     Console.Write(" ");
   }
   
+  public void SetTimerPos()
+  {
+    _timerPos[0] = Console.CursorLeft;
+    _timerPos[1] = Console.CursorTop;
+  }
+  
+  public int[] GetTimerPos()
+  {
+    return _timerPos;
+  }
+  
+  public void DisplayTimer()
+  {
+    // save current cursor position
+    int cPosLeft = Console.CursorLeft;
+    int cPosTop = Console.CursorTop;
+    
+    // hacky way of getting digits in duration
+    int totalDigits = $"{GetDuration()}".Length;
+    int currentDigits = 0;
+    
+    // engage timer loop.
+    for (int i = 0; i <= GetDuration(); i++)
+    {
+      Console.SetCursorPosition(GetTimerPos()[0], GetTimerPos()[1]);
+      currentDigits = $"{GetDuration() - i}".Length;
+      Console.Write($"{GetDuration() - i}");
+      for (int j = 1; j < totalDigits - currentDigits; j++)
+      {
+        Console.Write(" ");
+      }
+      Console.SetCursorPosition(cPosLeft, cPosTop);
+      Thread.Sleep(1000);
+    }
+  }
+  
   public void Run()
   {
     Console.WriteLine("You're not meant to run a generic activity.");
     SetThrobberPos();
     DisplayThrobber(3000, 250);
+    Console.Write("Timer: ");
+    SetTimerPos();
+    Console.Write(" <-- thats' counting down!");
+    DisplayTimer();
+    
   }
 }
