@@ -56,13 +56,14 @@ class Menu
     do
     {
       ans = GetSelection();
+      if (0 < ans && ans < GetMenuItems().Count())
+      {
+        isValid = true;
+      }
+      
       if (!isValid)
       {
         Console.WriteLine("Invalid Selection. Try again.");
-      }
-      else
-      {
-        isValid = true;
       }
     } while (!isValid);
     return GetMenuItems()[ans].GetActivity();
