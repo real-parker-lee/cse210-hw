@@ -1,9 +1,8 @@
-using System;
-
 class Program
 {
     static void Main(string[] args)
     {
-        Console.WriteLine("Hello Learning04 World!");
+        Assignment a = new Assignment("John Student", "AP underwater basket weaving final.");
+        Console.WriteLine(a.GetSummary());
     }
 }
