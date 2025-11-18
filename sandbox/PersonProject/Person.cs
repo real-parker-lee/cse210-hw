@@ -34,7 +34,7 @@ class Person
       _age = a;
     }
   }
-  
+  // a protected method can be accessed by the subclass, but NOT BY ITS INSTANCES!!!
   public void SetWeight(int w)
   {
     if (w > 600 || w < 0)
