@@ -5,7 +5,7 @@ class Program
         Assignment a = new Assignment("John Student", "AP underwater basket weaving final.");
         Console.WriteLine(a.GetSummary());
         
-        MathAssignment m = new MathAssignment("John Student, Ttig Homework", "11.2", "1-16 odd");
+        MathAssignment m = new MathAssignment("11.2", "1-16 odd", "John Student", "Trig Homework");
         Console.WriteLine(m.GetSummary());
         Console.WriteLine(m.GetHomeworkList());
     }
