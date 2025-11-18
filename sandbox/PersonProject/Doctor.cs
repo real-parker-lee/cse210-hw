@@ -9,6 +9,6 @@ class Doctor : Person
   
   public string DoctorInformation()
   {
-    return $"Dr. {PersonInformation()}, Tools: {_tools}";
+    return $"{PersonInformation()} Tools: {_tools}";
   }
 }
