@@ -56,7 +56,7 @@ class Menu
     do
     {
       ans = GetSelection();
-      if (0 < ans && ans < GetMenuItems().Count())
+      if (0 <= ans && ans < GetMenuItems().Count)
       {
         isValid = true;
       }

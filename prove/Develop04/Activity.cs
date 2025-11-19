@@ -2,7 +2,7 @@ public class Activity
 {
   private string _startMessage = "Let's Begin...";
   private string _endMessage = "You did well.";
-  private string _durationPrompt = "How many seconds would you like to spend on this activity? > ";
+  private string _durationPrompt = "How many seconds would you like to spend on this activity?\n> ";
   private string _description; // set by subclasses.
   // timer related things
   private int[] _timerPos = new int[2]; // LEFTMOST DIGIT
@@ -94,22 +94,24 @@ public class Activity
     return _timerPos;
   }
   
-  public void DisplayTimer()
+  public void DisplayTimer(int seconds)
   {
     // save current cursor position
     int cPosLeft = Console.CursorLeft;
     int cPosTop = Console.CursorTop;
     
-    // hacky way of getting digits in duration
-    int totalDigits = $"{GetDuration()}".Length;
+    // init vars used to calculate padding
+    int totalDigits = $"{seconds}".Length;
     int currentDigits = 0;
     
-    // engage timer loop.
-    for (int i = 0; i <= GetDuration(); i++)
+    // loop the timer
+    for (int i = 0 ; i <= seconds; i++)
     {
       Console.SetCursorPosition(GetTimerPos()[0], GetTimerPos()[1]);
-      currentDigits = $"{GetDuration() - i}".Length;
-      Console.Write($"{GetDuration() - i}");
+      currentDigits = $"{seconds - i}".Length;
+      Console.Write($"{seconds - i}");
+      
+      // add padding to the right for multi-digit durations.
       for (int j = 1; j < totalDigits - currentDigits; j++)
       {
         Console.Write(" ");
@@ -119,15 +121,11 @@ public class Activity
     }
   }
   
-  public void Run()
+  public virtual void Run()
   {
-    Console.WriteLine("You're not meant to run a generic activity.");
+    Console.WriteLine($"{GetEndMessage()}  ");
     SetThrobberPos();
     DisplayThrobber(3000, 250);
-    Console.Write("Timer: ");
-    SetTimerPos();
-    Console.Write(" <-- thats' counting down!");
-    DisplayTimer();
     
   }
 }
