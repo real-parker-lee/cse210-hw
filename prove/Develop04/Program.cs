@@ -23,9 +23,17 @@ class Program
         r.AddQuestion("What did you learn about yourself through this experience?");
         r.AddQuestion("How can you keep this experience in mind in the future?");
         
+        Listing l = new Listing();
+        l.AddPrompt("Who are people that you appreciate?");
+        l.AddPrompt("What are personal strengths of yours?");
+        l.AddPrompt("Who are people that you have helped this week?");
+        l.AddPrompt("When have you felt the Holy Ghost this month?");
+        l.AddPrompt("Who are some of your personal heroes?");
+        
         //mainMenu.AddItem(new MenuItem("Test Activity class Functions", a));
         mainMenu.AddItem(new MenuItem("Practice Mindful Breathing", b));
         mainMenu.AddItem(new MenuItem("Reflect on Resillience", r));
+        mainMenu.AddItem(new MenuItem("List your blessings", l));
         
         Activity chosen = mainMenu.Show();
         chosen.Run();
