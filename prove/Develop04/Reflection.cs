@@ -44,6 +44,7 @@ public class Reflection : Activity
   
   public override void Run()
   {
+    Console.Clear();
     // display common welcome.
     Console.WriteLine($"{GetStartMessage()}\n");
     Console.WriteLine($"{GetDescription()}\n");

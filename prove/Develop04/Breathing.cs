@@ -41,6 +41,7 @@ public class Breathing : Activity
   // Wouldn't want to re-use code :)
   public override void Run()
   {
+    Console.Clear();
     Console.WriteLine($"{GetStartMessage()}\n");
     Console.WriteLine($"{GetDescription()}\n");
     SetDuration(PromptDuration());

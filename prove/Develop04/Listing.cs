@@ -55,6 +55,7 @@ public class Listing : Activity
   
   public override void Run()
   {
+    Console.Clear();
     Console.WriteLine($"{GetStartMessage()}\n");
     Console.WriteLine($"{GetDescription()}\n");
     SetDuration(PromptDuration());
