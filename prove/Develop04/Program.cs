@@ -30,10 +30,14 @@ class Program
         l.AddPrompt("When have you felt the Holy Ghost this month?");
         l.AddPrompt("Who are some of your personal heroes?");
         
+        Quit q = new Quit();
+        
         //mainMenu.AddItem(new MenuItem("Test Activity class Functions", a));
         mainMenu.AddItem(new MenuItem("Practice Mindful Breathing", b));
         mainMenu.AddItem(new MenuItem("Reflect on Resillience", r));
         mainMenu.AddItem(new MenuItem("List your blessings", l));
+        // add a quit option
+        mainMenu.AddItem(new MenuItem("Quit Program", q));
         
         Activity chosen = mainMenu.Show();
         chosen.Run();
