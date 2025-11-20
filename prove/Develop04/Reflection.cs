@@ -55,7 +55,7 @@ public class Reflection : Activity
     // begin questions 
     for (int i = 0; i < GetDuration() / _secondsPerQuestion; i++)
     {
-      Console.Write($"{GetRandomPrompt()} ");
+      Console.Write($"{GetRandomQuestion()} ");
       SetThrobberPos();
       DisplayThrobber(_secondsPerQuestion * 1000, 250);
       Console.WriteLine("\n");
