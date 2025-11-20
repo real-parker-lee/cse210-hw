@@ -45,8 +45,6 @@ class Program
             Console.Clear();
             chosen = mainMenu.Show();
             chosen.Run();
-        } while (!chosen.DoQuit());
-        // clear the screen
-        
+        } while (!chosen.DoQuit());        
     }
 }
