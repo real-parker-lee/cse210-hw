@@ -70,6 +70,7 @@ public class Activity
   
   public void DisplayThrobber(int durationMs, int stepMs)
   {
+    Console.CursorVisible = false;
     int stepCount = durationMs / stepMs;
     for (int i = 0; i < stepCount; i++)
     {
@@ -81,6 +82,7 @@ public class Activity
     // hide the throbber.
     Console.SetCursorPosition(_throbberPos[0], _throbberPos[1]);
     Console.Write(" ");
+    Console.CursorVisible = true;
   }
   
   public void SetCountDownPos()
@@ -96,6 +98,7 @@ public class Activity
   
   public void DisplayCountDown(int seconds)
   {
+    Console.CursorVisible = false;
     // save current cursor position
     int cPosLeft = Console.CursorLeft;
     int cPosTop = Console.CursorTop;
@@ -119,6 +122,7 @@ public class Activity
       Console.SetCursorPosition(cPosLeft, cPosTop);
       Thread.Sleep(1000);
     }
+    Console.CursorVisible = true;
   }
   
   public virtual void Run()
