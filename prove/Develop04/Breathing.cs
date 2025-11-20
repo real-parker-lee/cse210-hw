@@ -49,20 +49,20 @@ public class Breathing : Activity
     int cycles = GetDuration() / period;
     
     Console.Write("Starting Breathing excersize in  ");
-    SetTimerPos();
-    DisplayTimer(3);
+    SetCountDownPos();
+    DisplayCountDown(3);
     Console.WriteLine("");
     
     // repeat the breathing loop that many times.
     for (int i = 0; i < cycles; i++)
     {
       Console.Write("Breathe in... ");
-      SetTimerPos();
-      DisplayTimer(GetInTime());
+      SetCountDownPos();
+      DisplayCountDown(GetInTime());
       Console.SetCursorPosition(0, Console.CursorTop); // move to beginning of line 
       Console.Write("Breathe out... ");
-      SetTimerPos();
-      DisplayTimer(GetOutTime());
+      SetCountDownPos();
+      DisplayCountDown(GetOutTime());
       Console.Write("  "); // get rid of digit that won't get overwritten due to string length.
       Console.SetCursorPosition(0, Console.CursorTop);
       

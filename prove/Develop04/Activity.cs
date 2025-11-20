@@ -4,8 +4,8 @@ public class Activity
   private string _endMessage = "You did well.";
   private string _durationPrompt = "How many seconds would you like to spend on this activity?\n> ";
   private string _description; // set by subclasses.
-  // timer related things
-  private int[] _timerPos = new int[2]; // LEFTMOST DIGIT
+  // countDown related things
+  private int[] _countDownPos = new int[2]; // LEFTMOST DIGIT
   private int _duration; // set upon prompting. units in seconds
   // throbber related things
   private string[] _throbberAnim = {"/", "|", "\\", "-"};
@@ -83,18 +83,18 @@ public class Activity
     Console.Write(" ");
   }
   
-  public void SetTimerPos()
+  public void SetCountDownPos()
   {
-    _timerPos[0] = Console.CursorLeft;
-    _timerPos[1] = Console.CursorTop;
+    _countDownPos[0] = Console.CursorLeft;
+    _countDownPos[1] = Console.CursorTop;
   }
   
-  public int[] GetTimerPos()
+  public int[] GetCountDownPos()
   {
-    return _timerPos;
+    return _countDownPos;
   }
   
-  public void DisplayTimer(int seconds)
+  public void DisplayCountDown(int seconds)
   {
     // save current cursor position
     int cPosLeft = Console.CursorLeft;
@@ -104,10 +104,10 @@ public class Activity
     int totalDigits = $"{seconds}".Length;
     int currentDigits = 0;
     
-    // loop the timer
+    // loop the countDown
     for (int i = 0 ; i <= seconds; i++)
     {
-      Console.SetCursorPosition(GetTimerPos()[0], GetTimerPos()[1]);
+      Console.SetCursorPosition(GetCountDownPos()[0], GetCountDownPos()[1]);
       currentDigits = $"{seconds - i}".Length;
       Console.Write($"{seconds - i}");
       

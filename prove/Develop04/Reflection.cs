@@ -49,8 +49,8 @@ public class Reflection : Activity
     Console.WriteLine($"{GetDescription()}\n");
     SetDuration(PromptDuration());
     Console.Write($"{GetRandomPrompt()} ");
-    SetTimerPos();
-    DisplayTimer(3);
+    SetCountDownPos();
+    DisplayCountDown(3);
     Console.WriteLine("\n");
     // begin questions 
     for (int i = 0; i < GetDuration() / _secondsPerQuestion; i++)
