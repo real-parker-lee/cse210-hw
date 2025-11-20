@@ -39,7 +39,14 @@ class Program
         // add a quit option
         mainMenu.AddItem(new MenuItem("Quit Program", q));
         
-        Activity chosen = mainMenu.Show();
-        chosen.Run();
+        Activity chosen;
+        do
+        {
+            Console.Clear();
+            chosen = mainMenu.Show();
+            chosen.Run();
+        } while (!chosen.DoQuit());
+        // clear the screen
+        
     }
 }

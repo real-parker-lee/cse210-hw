@@ -1,5 +1,6 @@
 public class Activity
 {
+  private bool _doQuit = false; // only used by Quit, defined here for polymorphism.
   private string _startMessage = "Let's Begin...";
   private string _endMessage = "You did well.";
   private string _durationPrompt = "How many seconds would you like to spend on this activity?\n> ";
@@ -19,6 +20,16 @@ public class Activity
   public Activity(string d)
   {
     _description = d;
+  }
+  
+  public bool DoQuit()
+  {
+    return _doQuit;
+  }
+  
+  public void ToggleDoQuit()
+  {
+    _doQuit = !_doQuit;
   }
   
   public string GetStartMessage()
