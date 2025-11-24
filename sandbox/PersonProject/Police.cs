@@ -8,6 +8,11 @@ class Police : Person
     // _age = a; // WARNING: bypasses parent class setter method.
     _weapons = weapons;
   }
+
+  public override string PersonInformation()
+  {
+    return $"Officer {base.PersonInformation()}, Weapons: {_weapons}";
+  }
   
   public string GetPoliceInformation()
   {

@@ -14,7 +14,7 @@ class Person
     SetAge(a);
   }
   
-  public string PersonInformation()
+  public virtual string PersonInformation()
   {
     return $"{_firstName} {_lastName}: {_age} years old, {_weight} pounds.";
   }
