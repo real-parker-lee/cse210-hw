@@ -13,9 +13,4 @@ class Police : Person
   {
     return $"Officer {base.PersonInformation()}, Weapons: {_weapons}";
   }
-  
-  public string GetPoliceInformation()
-  {
-    return $"Officer {base.PersonInformation()}, Weapons: {_weapons}";
-  }
 }

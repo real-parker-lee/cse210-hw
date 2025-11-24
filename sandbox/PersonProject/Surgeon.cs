@@ -12,11 +12,4 @@ class Surgeon : Doctor
   {
     return $"{_title} {base.PersonInformation()}";
   }
-
-  
-  
-  public string SurgeonInformation()
-  {
-    return $"{_title} {base.DoctorInformation()}";
-  }
 }

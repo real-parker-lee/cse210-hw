@@ -12,9 +12,4 @@ class Doctor : Person
     return $"{base.PersonInformation()} Tools: {_tools}";
     //return base.PersonInformation();
   }
-  
-  public string DoctorInformation()
-  {
-    return $"{PersonInformation()} Tools: {_tools}";
-  }
 }
