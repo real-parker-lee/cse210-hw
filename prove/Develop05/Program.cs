@@ -2,6 +2,7 @@ public class Program
 {
     static void Main(string[] args)
     {   
+        Console.Clear();
         GoalTracker tracker = new GoalTracker();
         Console.WriteLine("Welcome to the EternalQuest REPL v1.0!\n");
         Console.WriteLine("Type \"about\" to learn more about this program.");

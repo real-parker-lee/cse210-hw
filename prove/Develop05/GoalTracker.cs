@@ -198,6 +198,56 @@ public class GoalTracker
         
       case "create":
         // make new goal in guided setup process
+        Console.Write("Enter the type of goal (eternal/checklist/onetime): ");
+        bool validType = false;
+        do
+        {
+          string goalType = Console.ReadLine();
+          switch (goalType)
+          {
+            case "eternal":
+              Console.Write("Goal Name: ");
+              string n_e = Console.ReadLine();
+              Console.Write("Point Value: ");
+              int p_e = int.Parse(Console.ReadLine());
+              
+              AddGoal(new EternalGoal(n_e, p_e));
+              validType = true;
+              break;
+              
+            case "checklist":
+              Console.Write("Goal Name: ");
+              string n_c = Console.ReadLine();
+              
+              Console.Write("Point Value: ");
+              int p_c = int.Parse(Console.ReadLine());
+              
+              Console.WriteLine("How many times should this goal be completed?");
+              Console.Write("Count: ");
+              int min_c = int.Parse(Console.ReadLine());
+              
+              Console.WriteLine("How many bonus points should reaching the threshold give?");
+              Console.Write("Bonus: ");
+              int b_c = int.Parse(Console.ReadLine());
+              
+              AddGoal(new ChecklistGoal(n_c, b_c, p_c, min_c));
+              validType = true;
+              break;
+              
+            case "onetime":
+              Console.Write("Goal Name: ");
+              string n_o = Console.ReadLine();
+              Console.Write("Point Value: ");
+              int p_o = int.Parse(Console.ReadLine());
+              AddGoal(new OneTimeGoal(n_o, p_o));
+              validType = true;
+              break;
+              
+            default:
+              Console.WriteLine($"Unrecognized goal type: {goalType}\n");
+              break;
+          }
+        } while (!validType);
         break;
         
       case "quit":
@@ -233,7 +283,6 @@ public class GoalTracker
   
   public void RunRepl()
   {
-    Console.Clear();
     do
     {
       ReplStep();
