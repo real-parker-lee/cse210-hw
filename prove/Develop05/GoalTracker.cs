@@ -117,7 +117,7 @@ public class GoalTracker
   // main loop for handling user input and commands.
   public void ReplStep()
   {
-    Console.WriteLine("Input a command, or type \"help\" for a list of commands.");
+    //Console.WriteLine("Input a command, or type \"help\" for a list of commands.");
     Console.Write("> ");
     string cmd = Console.ReadLine();
     string[] args = cmd.Split(" ");
@@ -130,13 +130,11 @@ public class GoalTracker
         Console.WriteLine("                      If a path is not specified, will");
         Console.WriteLine("                      instead overwrite the most");
         Console.WriteLine("                      recently loaded file.");
-        Console.WriteLine("list                List all goals");
+        Console.WriteLine("list                List all goals.");
         Console.WriteLine("check-off [index]   Record completon of the goal at");
         Console.WriteLine("                      the given index.");
-        Console.WriteLine("points              Display your current point score");
-        Console.WriteLine("new-eternal         Create a new Eternal goal");
-        Console.WriteLine("new-checklist       Create a new checklist goal");
-        Console.WriteLine("new one-time        Create a new one-time goal");
+        Console.WriteLine("points              Display your current point score.");
+        Console.WriteLine("create              Create a new goal interactively.");
         Console.WriteLine("quit                Exit the application.");
         Console.WriteLine("clear               Clear the screen.");
         Console.WriteLine("help                Show this help message.");
@@ -198,13 +196,8 @@ public class GoalTracker
         Console.WriteLine($"You have {GetPoints()} points.\n");
         break;
         
-      case "new-eternal":
-        break;
-        
-      case "new-checklist":
-        break;
-        
-      case "new-onetime":
+      case "create":
+        // make new goal in guided setup process
         break;
         
       case "quit":
@@ -222,12 +215,9 @@ public class GoalTracker
         Console.WriteLine("");
         Console.WriteLine("Each goal gives points when you check it off, but Check-list goals will give a bonus once you reach the set threshold.");
         Console.WriteLine("");
-        Console.WriteLine("You write commands to interact with the program. To create a new Eternal goal, you'd write:\n");
-        Console.WriteLine("new-eternal my-goal 1000");
-        Console.WriteLine("\nto make a new eternal goal named \"my-goal\" worth 1000 points.");
-        Console.WriteLine("Alternatively, you could run\n");
-        Console.WriteLine("new-eternal");
-        Console.WriteLine("\nto enter a more guided interactive environment, which will prompt you for the values you want.");
+        Console.WriteLine("You write commands to interact with the program. For example, to mark the 3rd goal in the list as having been completed, you'd write:\n");
+        Console.WriteLine("check-off 3");
+        Console.WriteLine("Not all goals take arguments; some run interactively. For example, the \"create\" command will ask for the details of the goal to be created.");
         Console.WriteLine("\nFor a list of all commands, run the \"help\" command.\n");
         break;
         
