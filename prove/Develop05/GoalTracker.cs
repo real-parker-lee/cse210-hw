@@ -221,18 +221,55 @@ public class GoalTracker
         break;
         
       case "check-off":
+        bool tryAgain = false;
         int idx = 0;
+        string idx_str = "";
         if (args.Length < 2)
         {
           // prompt for index
           Console.Write("Select a goal by index: ");
-          idx = int.Parse(Console.ReadLine()) - 1;
+          do
+          {
+            tryAgain = false;
+            try
+            {
+              idx_str = Console.ReadLine();
+              idx = int.Parse(idx_str) - 1;
+            }
+            catch (FormatException)
+            {
+              tryAgain = true;
+              Console.WriteLine($"Expected an int, got \"{idx_str}\"\n");
+            }
+          } while (tryAgain);
         }
         else
         {
-          idx = int.Parse(args[1]) - 1;
+          do
+          {
+            tryAgain = false;
+            try
+            {
+              idx_str = args[1];
+              idx = int.Parse(idx_str) - 1;
+            }
+            catch (FormatException)
+            {
+              tryAgain = true;
+              Console.WriteLine($"Expected an int, got \"{idx_str}\"\n");
+            }
+          } while (tryAgain);
         }
-        BaseGoal g = SelectGoal(idx);
+        BaseGoal g;
+        try
+        {
+          g = GetGoals()[idx];
+        }
+        catch (ArgumentOutOfRangeException)
+        {
+          Console.WriteLine($"ERROR: There is no item #{idx + 1} (index {idx} is out of range).");
+          break;
+        }
         int deltapts = g.CheckOff();
         SetPoints(GetPoints() + deltapts);
         Console.WriteLine($"Checked off goal #{idx + 1}.\n");

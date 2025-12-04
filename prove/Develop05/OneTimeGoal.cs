@@ -27,8 +27,15 @@ public class OneTimeGoal : BaseGoal
   
   public override int CheckOff()
   {
-    SetDone(true);
-    return GetPoints();
+    if (IsDone())
+    {
+      return 0;
+    }
+    else
+    {
+      SetDone(true);
+      return GetPoints();
+    }
   }
   
   public override string Serialize()
