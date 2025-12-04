@@ -217,6 +217,7 @@ public class GoalTracker
         
       case "list":
         ShowAll();
+        Console.WriteLine($"Listed {GetGoals().Count()} goals.\n");
         break;
         
       case "check-off":
