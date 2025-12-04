@@ -4,6 +4,7 @@ public class GoalTracker
   private int _totalPoints = 0;
   private string _currentPath = "EternalQuest.save";
   private bool _shouldExit = false;
+  private bool _fileErrorThrown = false;
   
   public List<BaseGoal> GetGoals()
   {
@@ -47,7 +48,40 @@ public class GoalTracker
   
   public void Deserialize()
   {
-    string[] lines = File.ReadAllLines(GetCurrentPath());
+    _fileErrorThrown = false;
+    string[] lines;
+    try
+    {
+      _fileErrorThrown = false;
+      lines = File.ReadAllLines(GetCurrentPath());
+    }
+    catch (FileNotFoundException)
+    {
+      _fileErrorThrown = true;
+      Console.WriteLine($"ERROR: File \"{GetCurrentPath()}\" does not exist.");
+      return;
+    }
+    catch (PathTooLongException)
+    {
+      _fileErrorThrown = true;
+      Console.WriteLine("ERROR: path is too long. Try changing the working directory of this program.");
+      return;
+    }
+    catch (UnauthorizedAccessException)
+    {
+      _fileErrorThrown = true;
+      Console.WriteLine("ERROR: Access to file denied.");
+      return;
+    }
+    catch (Exception)
+    {
+      _fileErrorThrown = true;
+      Console.WriteLine("ERROR: unknown error occurred. Exiting program.");
+      SetShouldExit(true);
+      return;
+    }
+    
+    
     for (int i = 0; i < lines.Length; i++)
     {
       // Console.WriteLine($"{i}");
@@ -121,6 +155,9 @@ public class GoalTracker
     Console.Write("> ");
     string cmd = Console.ReadLine();
     string[] args = cmd.Split(" ");
+    
+    bool shouldAskAgain = false; // for input validation.
+    
     switch (args[0])
     {
       case "help":
@@ -167,7 +204,15 @@ public class GoalTracker
           SetCurrentPath(args[1]);
         }
         Deserialize();
-        Console.WriteLine($"Loaded {GetGoals().Count()} goals from file at \"{GetCurrentPath()}\"\n");
+        if (_fileErrorThrown)
+        {
+          Console.WriteLine("No file loaded.\n");
+        }
+        else
+        {
+          Console.WriteLine($"Loaded {GetGoals().Count()} goals from file at \"{GetCurrentPath()}\"\n");
+        }
+        
         break;
         
       case "list":
@@ -209,7 +254,23 @@ public class GoalTracker
               Console.Write("Goal Name: ");
               string n_e = Console.ReadLine();
               Console.Write("Point Value: ");
-              int p_e = int.Parse(Console.ReadLine());
+              int p_e = 0;
+              string p_e_str = "";
+              
+              do
+              {
+                shouldAskAgain = false;
+                try
+                {
+                  p_e_str = Console.ReadLine();
+                  p_e = int.Parse(p_e_str);
+                }
+                catch (FormatException)
+                {
+                  shouldAskAgain = true;
+                  Console.WriteLine($"Expected an int, got \"{p_e_str}\"\n");
+                }
+              } while (shouldAskAgain);
               
               AddGoal(new EternalGoal(n_e, p_e));
               validType = true;
@@ -218,17 +279,63 @@ public class GoalTracker
             case "checklist":
               Console.Write("Goal Name: ");
               string n_c = Console.ReadLine();
-              
-              Console.Write("Point Value: ");
-              int p_c = int.Parse(Console.ReadLine());
+              int p_c = 0;
+              string p_c_str = "";
+              do
+              {
+                shouldAskAgain = false;
+                Console.Write("Point Value: ");
+                try
+                {
+                  p_c_str = Console.ReadLine();
+                  p_c = int.Parse(p_c_str);
+                }
+                catch (FormatException)
+                {
+                  shouldAskAgain = true;
+                  Console.WriteLine($"Expected an int, got \"{p_c_str}\"\n");
+                }
+              } while (shouldAskAgain);
+              shouldAskAgain = false;
               
               Console.WriteLine("How many times should this goal be completed?");
               Console.Write("Count: ");
-              int min_c = int.Parse(Console.ReadLine());
+              string min_c_str = "";
+              int min_c = 0;
+              do
+              {
+                shouldAskAgain = false;
+                try
+                {
+                  min_c_str = Console.ReadLine();
+                  min_c = int.Parse(min_c_str);
+                }
+                catch (FormatException)
+                {
+                  shouldAskAgain = true;
+                  Console.WriteLine($"Expected an int, got \"{min_c_str}\"\n");
+                }
+              } while (shouldAskAgain);
               
               Console.WriteLine("How many bonus points should reaching the threshold give?");
-              Console.Write("Bonus: ");
-              int b_c = int.Parse(Console.ReadLine());
+              string b_c_str = "";
+              int b_c = 0;
+              do
+              {
+                shouldAskAgain = false;
+                Console.Write("Bonus: ");
+                try
+                {
+                  b_c_str = Console.ReadLine();
+                  b_c = int.Parse(b_c_str);
+                }
+                catch (FormatException)
+                {
+                  shouldAskAgain = true;
+                  Console.WriteLine($"Expected an int, got \"{b_c_str}\"\n");
+                }
+              } while (shouldAskAgain);
+              shouldAskAgain = false;
               
               AddGoal(new ChecklistGoal(n_c, b_c, p_c, min_c));
               validType = true;
@@ -238,7 +345,22 @@ public class GoalTracker
               Console.Write("Goal Name: ");
               string n_o = Console.ReadLine();
               Console.Write("Point Value: ");
-              int p_o = int.Parse(Console.ReadLine());
+              int p_o = 0;
+              string p_o_str = "";
+              do
+              {
+                shouldAskAgain = false;
+                try
+                {
+                  p_o_str = Console.ReadLine();
+                  p_o = int.Parse(p_o_str);
+                }
+                catch (FormatException)
+                {
+                  shouldAskAgain = true;
+                  Console.WriteLine($"Expected an int, got \"{p_o_str}\"\n");
+                }
+              } while (shouldAskAgain);
               AddGoal(new OneTimeGoal(n_o, p_o));
               validType = true;
               break;
