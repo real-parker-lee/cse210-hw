@@ -6,7 +6,7 @@ class Program
          
         To be honest, the Repl class and the Command class are cool enough to be a stand-alone library. It affords total control to the developer implementing the UI, defines all data in one place, and maintains separation from classes that hold data and classes that show the UI. I'm really proud of those classes! Just replace any occurence of EntryHandler with a custom class and it should work.
         
-        To make a new command, one provides the name, usage, and description, along with a lambda function cast to an Action<string[], EntryHandler>. This allows the behavior of the command to be defined upon instantiation, and to act on the EntryHandler by invoing the EhtryHandler's methods, passing Parsed values from the string array when necessary.
+        To make a new command, one provides the name, usage, and description, along with a lambda function cast to an Action<string[], EntryTracker>. This allows the behavior of the command to be defined upon instantiation, and to act on the EntryHandler by invoing the EhtryHandler's methods, passing Parsed values from the string array when necessary.
         */
         
         // instance a REPL (Read-Evaluate-Print Loop) for user interaction
