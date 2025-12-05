@@ -1,9 +1,190 @@
-using System;
-
 class Program
 {
     static void Main(string[] args)
     {
-        Console.WriteLine("Hello FinalProject World!");
+        /*For some context, I taught myself a language called Common Lisp, which is a beautiful and powerful language with first-class functions, powerful macros, and multiple-inheritance. It changed the way I thought about what code could be. My implementation of this program was informed by commonplace Lisp conventions, which you will see later in this file.
+         
+        To be honest, the Repl class and the Command class are cool enough to be a stand-alone library. It affords total control to the developer implementing the UI, defines all data in one place, and maintains separation from classes that hold data and classes that show the UI. I'm really proud of those classes! Just replace any occurence of EntryHandler with a custom class and it should work.
+        
+        To make a new command, one provides the name, usage, and description, along with a lambda function cast to an Action<string[], EntryHandler>. This allows the behavior of the command to be defined upon instantiation, and to act on the EntryHandler by invoing the EhtryHandler's methods, passing Parsed values from the string array when necessary.
+        */
+        
+        // instance a REPL (Read-Evaluate-Print Loop) for user interaction
+        // (another thing I borrowed from LISP, which invented the concept as far as I know).
+        Repl repl = new Repl("> ", "Welcome to Docket!\n Type 'help' to get a list of commands.\n");
+        
+        // define all commands, their behavior, and their documentations.
+        // TODO
+        repl.AddCommand(new Command("load", "load [path::string]", "Load a docket from the file at the given path.\n",
+                                    (args, tracker) => {
+                                        string path = "";
+                                        try
+                                        {
+                                            path = args[1];
+                                        }
+                                        catch (ArgumentOutOfRangeException)
+                                        {
+                                            Console.WriteLine("ERROR: insufficient number of arguments. Must specify a path to load from.\n");
+                                            return;
+                                        }
+                                        repl.SetCurrentPath(args[1]);
+                                        Console.WriteLine($"Loading {tracker.GetGroupName()} from file at {repl.GetCurrentPath()}.");
+                                        // invoke the static deserialize method from EntryTracker to set the repl's tracker in bulk.
+                                    }));
+        // TODO
+        repl.AddCommand(new Command("save", "save [?path::string]", "Save the current docket to the file at [path], or to the last loaded file if no path is provided.\n",
+                                    (args, tracker) => {
+                                        Console.WriteLine("Invoked save");
+                                        // make sure to concatenate each entryTracker's serialized data.
+                                    }));
+        // DONE
+        repl.AddCommand(new Command("list", "list [?type::string]", "list all entries of the given [type], or all entries if no type is given.\nType can be one of the following literals: 'event', 'note', or 'task'\n",
+                                    (args, tracker) => {
+                                        tracker.ShowAll();
+                                    }));
+        // TODO
+        repl.AddCommand(new Command("new", "new [type::string] [ARGS]", "Create a new entry of the given type. Arguments for each are order-sensitive, and are as follows:\nEVENT: name::string, priority::int, location::string, start::string, end::string\nTASK: name::string, priority::int\nNOTE: name::string, priority::int\nStart and end strings must be parseable dates, and the priority must be from 0 through 4./nThe actual contents of the note will be obtained interactively.\n",
+                                    (args, tracker) => {
+                                        Console.WriteLine($"Created new {args[0]} entry.");
+                                        try
+                                        {
+                                            switch (args[1].ToUpper())
+                                            {
+                                                case "TASK":
+                                                    if (args.Count() < 4)
+                                                    {
+                                                        Console.WriteLine("Error: Insufficient number of arguments.");
+                                                        return;
+                                                    }
+                                                    // attempt to parse rest of args
+                                                    string name = args[2];
+                                                    int priorityInt = -1;
+                                                    try
+                                                    {
+                                                        priorityInt = int.Parse(args[3]);
+                                                    }
+                                                    catch (FormatException)
+                                                    {
+                                                        //Console.WriteLine($"> list {args[1]} {args[2]} ... ");
+                                                        Console.WriteLine($"Error: could not parse \"{args[3]} as an Int.\"");
+                                                        return;
+                                                    }
+                                                    // check if integer is in range:
+                                                    if (0 > priorityInt || priorityInt > 4)
+                                                    {
+                                                        Console.WriteLine($"Error: The integer \"{args[3]}\" does not correspond to a valid Priority.");
+                                                        return;
+                                                    }
+                                                    
+                                                    //Are we still in this block? if so, make a new Task:
+                                                    tracker.AddEntry(new TaskEntry(name, Priority.FromNumber(priorityInt), false));
+                                                    break;
+                                                case "EVENT":
+                                                    if (args.Count() < 7)
+                                                    {
+                                                        Console.WriteLine("Error: Insufficient number of arguments.");
+                                                        return;
+                                                    }
+                                                    string eventName = args[2];
+                                                    // try to get priority.
+                                                    priorityInt = -1;
+                                                    try
+                                                    {
+                                                        priorityInt = int.Parse(args[3]);
+                                                    }
+                                                    catch (FormatException)
+                                                    {
+                                                        Console.WriteLine($"Error: could not parse \"{args[3]}\" as an Int.");
+                                                    }
+                                                    Priority p = Priority.FromNumber(priorityInt);
+                                                    // TRICK: if this int does not represent a valid priority, calling AsString() will return a string that is parseable as an int.
+                                                    try
+                                                    {
+                                                        int throwaway = int.Parse(p.AsString());
+                                                        // if we're here, the int wasn't a valid priority. show an error and stop.
+                                                        Console.WriteLine($"Error: The integer \"{args[3]}\" does not correspond to a valid Priority.");
+                                                        return;
+                                                    }
+                                                    catch (FormatException)
+                                                    {
+                                                        // if we're here, AsString was able to find a corresponding priority.
+                                                        // parse the rest of the data
+                                                        // get location
+                                                        string eventLocation = args[4];
+                                                        
+                                                        // try to get start
+                                                        DateTime start = new DateTime();
+                                                        try
+                                                        {
+                                                            start = DateTime.Parse(args[5]);
+                                                        }
+                                                        catch (FormatException)
+                                                        {
+                                                            Console.WriteLine($"Error: Could not parse \"{args[5]}\" as DateTime.");
+                                                            return;
+                                                        }
+                                                        // try to get end
+                                                        DateTime end = new DateTime();
+                                                        try
+                                                        {
+                                                            end = DateTime.Parse(args[6]);
+                                                        }
+                                                        catch (FormatException)
+                                                        {
+                                                            Console.WriteLine($"Error: Could not parse \"{args[6]}\" as DateTime");
+                                                            return;
+                                                        }
+                                                        
+                                                        tracker.AddEntry(new EventEntry(eventName, p, eventLocation, start, end));
+                                                    }
+                                                    break;
+                                                
+                                                case "NOTE":
+                                                    // this one is special. we need to invoke an interactive editor.
+                                                    break;
+                                                default:
+                                                    Console.WriteLine("Error: unsupported entry type: {args[1]}");
+                                                    return;
+                                            }
+                                        }
+                                        catch (ArgumentOutOfRangeException)
+                                        {
+                                            Console.WriteLine($"name: {args[2]}, priority: {args[3]}");
+                                        }
+                                    }));
+        // TODO
+        repl.AddCommand(new Command("complete", "complete [type::string] [index::int]", "Marks an item as complete if such an action is supported, silently fails if not.\n",
+                                    (args, tracker) => {
+                                        int idx;
+                                        Console.WriteLine("complete invoked");
+                                        try
+                                        {
+                                            idx = int.Parse(args[2]);
+                                            tracker.GetEntries()[idx - 1].CheckOff();
+                                        }
+                                        catch (FormatException)
+                                        {
+                                            Console.WriteLine($"Error: could not parse {args[2]} as an integer.");
+                                            return;
+                                        }
+                                        catch (ArgumentOutOfRangeException)
+                                        {
+                                            Console.WriteLine($"Error: index {int.Parse(args[2]) - 1} is out of range. There is no entry #{args[2]} in this entry group.");
+                                            return;
+                                        }
+                                    }));
+        // TODO
+        repl.AddCommand(new Command("delete", "delete [type::string] [index::int]", "Removes the item at the given index of the given group.\n",
+                                    (args, tracker) => {
+                                        Console.WriteLine($"Deleting {args[1]} entry #{args[2]}.\n");
+                                    }));
+        // DONE
+        repl.AddCommand(new Command("clear", "clear", "Clear the console.\n",
+                                    (args, tracker) => {
+                                        Console.Clear();
+                                    }));
+       
+        // run the REPL
+        repl.Run();
     }
 }
