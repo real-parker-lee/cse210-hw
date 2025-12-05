@@ -31,6 +31,13 @@ public class TaskEntry : Entry
   
   public override void CheckOff()
   {
+    Console.WriteLine($"Checked off a the task \"{GetName()}\"\n");
     SetDone(true);
+  }
+  
+  public override void CheckOff(int idx)
+  {
+    SetDone(true);
+    Console.WriteLine($"Checked off task #{idx}: {GetName()}.\n");
   }
 }

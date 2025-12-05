@@ -11,7 +11,7 @@ class Program
         
         // instance a REPL (Read-Evaluate-Print Loop) for user interaction
         // (another thing I borrowed from LISP, which invented the concept as far as I know).
-        Repl repl = new Repl("> ", "Welcome to Docket!\n Type 'help' to get a list of commands.\n");
+        Repl repl = new Repl("> ", "Welcome to the Docket REPL!\nType 'help' to get a list of commands.\n");
         
         // define all commands, their behavior, and their documentations.
         // TODO
@@ -45,7 +45,7 @@ class Program
         // TODO
         repl.AddCommand(new Command("new", "new [type::string] [ARGS]", "Create a new entry of the given type. Arguments for each are order-sensitive, and are as follows:\nEVENT: name::string, priority::int, location::string, start::string, end::string\nTASK: name::string, priority::int\nNOTE: name::string, priority::int\nStart and end strings must be parseable dates, and the priority must be from 0 through 4./nThe actual contents of the note will be obtained interactively.\n",
                                     (args, tracker) => {
-                                        Console.WriteLine($"Created new {args[0]} entry.");
+                                        Console.WriteLine($"Created new {args[1]} entry.");
                                         try
                                         {
                                             switch (args[1].ToUpper())
@@ -156,11 +156,11 @@ class Program
         repl.AddCommand(new Command("complete", "complete [type::string] [index::int]", "Marks an item as complete if such an action is supported, silently fails if not.\n",
                                     (args, tracker) => {
                                         int idx;
-                                        Console.WriteLine("complete invoked");
+                                        //Console.WriteLine("complete invoked");
                                         try
                                         {
                                             idx = int.Parse(args[2]);
-                                            tracker.GetEntries()[idx - 1].CheckOff();
+                                            tracker.GetEntries()[idx - 1].CheckOff(idx);
                                         }
                                         catch (FormatException)
                                         {
@@ -172,6 +172,7 @@ class Program
                                             Console.WriteLine($"Error: index {int.Parse(args[2]) - 1} is out of range. There is no entry #{args[2]} in this entry group.");
                                             return;
                                         }
+                                        
                                     }));
         // TODO
         repl.AddCommand(new Command("delete", "delete [type::string] [index::int]", "Removes the item at the given index of the given group.\n",

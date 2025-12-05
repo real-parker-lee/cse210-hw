@@ -57,4 +57,9 @@ public class EventEntry : Entry
     Console.WriteLine("Error: cannot manually mark an event as done.");
     return;
   }
+  
+  public override void CheckOff(int idx)
+  {
+    CheckOff();
+  }
 }

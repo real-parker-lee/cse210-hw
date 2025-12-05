@@ -45,6 +45,11 @@ public class NoteEntry : Entry
     return $"";
   }
   
+  public override void CheckOff(int idx)
+  {
+    CheckOff();
+  }
+  
   public override void CheckOff()
   {
     Console.WriteLine("Error: cannot check off a note.");

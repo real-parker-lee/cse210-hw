@@ -78,8 +78,8 @@ public class Repl
   
   public void ShowAllHelp()
   {
-    Console.WriteLine("help: Show this message.\n");
-    Console.WriteLine("quit: exit the program.\n");
+    Console.WriteLine("help\nShow this message.\n");
+    Console.WriteLine("quit\nexit the program.\n");
     foreach (Command cmd in GetCommands())
     {
       cmd.ShowHelp();
@@ -232,6 +232,8 @@ public class Repl
   
   public void Run()
   {
+    Console.Clear();
+    Console.WriteLine(GetBanner());
     do
     {
       Step();

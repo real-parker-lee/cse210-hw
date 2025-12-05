@@ -55,4 +55,9 @@ public class Entry
   {
     return;
   }
+  
+  public virtual void CheckOff(int idx)
+  {
+    return;
+  }
 }
