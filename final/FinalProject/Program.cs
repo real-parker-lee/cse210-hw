@@ -256,7 +256,7 @@ class Program
                                                         note.Edit(noteName, "Edit Me, then press ESC when done!");
                                                         Console.Clear();
                                                         string b64Data = note.GetEncodedData();
-                                                        Console.WriteLine($"Encoded: {b64Data}");
+                                                        //Console.WriteLine($"Encoded: {b64Data}");
                                                         
                                                         tracker.AddEntry(new NoteEntry(noteName, noteP, b64Data, DateTime.Now));
                                                         Console.WriteLine("Created new Note.\n");
