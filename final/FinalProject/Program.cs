@@ -35,7 +35,7 @@ class Program
                                         }
                                         catch (ArgumentOutOfRangeException)
                                         {
-                                            Console.WriteLine("ERROR: insufficient number of arguments. Must specify a path to load from.\n");
+                                            Console.WriteLine("ERROR: insufficient number of arguments. MUST specify a path to load from.\n");
                                             return;
                                         }
                                         repl.SetCurrentPath(args[1]);
@@ -43,6 +43,7 @@ class Program
                                         try
                                         {
                                             string[] lines = File.ReadAllLines(repl.GetCurrentPath());
+                                            repl.SetEntryTrackers(EntryTracker.Deserialize(repl.GetCurrentPath()));
                                         }
                                         catch (FileNotFoundException)
                                         {
@@ -51,7 +52,7 @@ class Program
                                         }
                                         // invoke the static deserialize method from EntryTracker to set the repl's tracker in bulk.
                                     }));
-        // TODO
+        // DONE
         repl.AddCommand(new Command("save", "save [?path::string]", "    Save the current docket to the file at [path], or to the last loaded file if no path is provided.\n",
                                     (args, tracker) => {
                                         if (args.Count() == 2)

@@ -52,6 +52,11 @@ public class Repl
     return _trackers;
   }
   
+  public void SetEntryTrackers(List<EntryTracker> trackers)
+  {
+    _trackers = trackers;
+  }
+  
   public List<Command> GetCommands()
   {
     return _commands;
