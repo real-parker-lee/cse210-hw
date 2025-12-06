@@ -7,6 +7,10 @@ class Program
         To be honest, the Repl class and the Command class are cool enough to be a stand-alone library. It affords total control to the developer implementing the UI, defines all data in one place, and maintains separation from classes that hold data and classes that show the UI. I'm really proud of those classes! Just replace any occurence of EntryHandler with a custom class and it should work.
         
         To make a new command, one provides the name, usage, and description, along with a lambda function cast to an Action<string[], EntryTracker>. This allows the behavior of the command to be defined upon instantiation, and to act on the EntryHandler by invoing the EhtryHandler's methods, passing Parsed values from the string array when necessary.
+        
+        This works even if no one EntryTracker is specified, since the Command class overloads the method that calls the lambda function, allowing us to define a version that operates on each EntryTracker stored by the REPL class. The only downside is that, in cases where a specific EntryTracker is not specified, the function will run once for each tracker, even in cases where we're not operating on the tracker. For example, the 'clear' command actually clears the console three times, but clearing the console is idempotent so we don't really care.
+        
+        There are cases where you do need to be careful of the aforementioned downside: making a command that does not specify an EntryTracker that just prints a message will result in that message being printed three times.
         */
         
         // instance a REPL (Read-Evaluate-Print Loop) for user interaction
