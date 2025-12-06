@@ -101,7 +101,12 @@ public class Repl
     }
   }
   
-  public string[] StringSlurp(string[] rawWords)
+  // DOCUMENTATION:
+  /*
+    We want to be able to use spaces in our entry names, but the arguments are delineated by spaces. To get around this, we pre-process the split argument array and join all elements between quotes. This new element then has all quotes TRIMMED from it, so it serializes and displays just like a regular string.
+    This took me way too long to impement.
+  */
+  public string[] JoinStrings(string[] rawWords)
   {
     List<string> wordList = new List<string>();
     
@@ -171,7 +176,7 @@ public class Repl
     }
     
     // Pre-process the argument array, joining any quoted entries into a single string argument.
-    string[] args = StringSlurp(rawargs);
+    string[] args = JoinStrings(rawargs);
     for (int i = 0; i < argList.Count(); i++)
     {
       args[i] = argList[i];
