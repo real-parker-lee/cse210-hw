@@ -2,6 +2,11 @@ class Program
 {
     static void Main(string[] args)
     {
+        
+        Note n = new Note();
+        n.SetData("test");
+        n.Edit("test note");
+        Console.WriteLine(n.GetDecodedData());
         /*For some context, I taught myself a language called Common Lisp, which is a beautiful and powerful language with first-class functions, powerful macros, and multiple-inheritance. It changed the way I thought about what code could be. My implementation of this program was informed by commonplace Lisp conventions, which you will see later in this file.
          
         To be honest, the Repl class and the Command class are cool enough to be a stand-alone library. It affords total control to the developer implementing the UI, defines all data in one place, and maintains separation from classes that hold data and classes that show the UI. I'm really proud of those classes! Just replace any occurence of EntryHandler with a custom class and it should work.
