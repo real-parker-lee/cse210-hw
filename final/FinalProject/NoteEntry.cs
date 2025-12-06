@@ -13,7 +13,7 @@ public class NoteEntry : Entry
     _contents = c;
   }
   
-  public string GetContents()
+  public override string GetContents()
   {
     return _contents;
   }

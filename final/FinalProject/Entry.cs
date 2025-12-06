@@ -60,4 +60,9 @@ public class Entry
   {
     return;
   }
+  
+  public virtual string GetContents()
+  {
+    return "lkafdkjh";
+  }
 }

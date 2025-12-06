@@ -78,8 +78,8 @@ public class Repl
   
   public void ShowAllHelp()
   {
-    Console.WriteLine("help\nShow this message.\n");
-    Console.WriteLine("quit\nexit the program.\n");
+    Console.WriteLine("help\n    Show this message.\n");
+    Console.WriteLine("quit\n    Exit the program.\n");
     foreach (Command cmd in GetCommands())
     {
       cmd.ShowHelp();
@@ -161,7 +161,7 @@ public class Repl
     string input = Console.ReadLine();
     string[] rawargs = input.Split(" ");
     List<string> argList = new List<string>(); 
-    Command target = new Command("invalid", "", "", (args, tracker) => {Console.WriteLine("Error: Invalid Command. Type 'help' for a list of commands.\n");});
+    Command target = new Command("invalid", "", "", (args, tracker) => {return;});
     EntryTracker tracker;
     
     // if nothing is in the input, do nothing.
@@ -198,6 +198,13 @@ public class Repl
           break;
         }
         target = (cmd.GetName() == args[0]) ? cmd : target;
+      }
+      
+      // if we haven't found a match, show an error.
+      if (target.GetName() == "invalid")
+      {
+        Console.WriteLine($"Error: unrecognized command: \"{args[0]}\".\nType 'help' for a list of commands.");
+        return;
       }
       
       // check length of args[], look for type argument at index 1

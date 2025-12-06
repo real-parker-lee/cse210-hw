@@ -62,4 +62,9 @@ public class EventEntry : Entry
   {
     CheckOff();
   }
+  
+  public override string GetContents()
+  {
+    return "Error: Entries of type 'EVENT' do not have contents.";
+  }
 }

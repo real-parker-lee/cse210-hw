@@ -15,7 +15,7 @@ class Program
         
         // define all commands, their behavior, and their documentations.
         // TODO
-        repl.AddCommand(new Command("load", "load [path::string]", "Load a docket from the file at the given path.\n",
+        repl.AddCommand(new Command("load", "load [path::string]", "    Load a docket from the file at the given path.\n",
                                     (args, tracker) => {
                                         string path = "";
                                         try
@@ -32,18 +32,36 @@ class Program
                                         // invoke the static deserialize method from EntryTracker to set the repl's tracker in bulk.
                                     }));
         // TODO
-        repl.AddCommand(new Command("save", "save [?path::string]", "Save the current docket to the file at [path], or to the last loaded file if no path is provided.\n",
+        repl.AddCommand(new Command("save", "save [?path::string]", "    Save the current docket to the file at [path], or to the last loaded file if no path is provided.\n",
                                     (args, tracker) => {
                                         Console.WriteLine("Invoked save");
                                         // make sure to concatenate each entryTracker's serialized data.
                                     }));
         // DONE
-        repl.AddCommand(new Command("list", "list [?type::string]", "list all entries of the given [type], or all entries if no type is given.\nType can be one of the following literals: 'event', 'note', or 'task'\n",
+        repl.AddCommand(new Command("list", "list [?type::string]", "    list all entries of the given [type], or all entries if no type is given.\n    Type can be one of the following literals: 'event', 'note', or 'task'\n",
                                     (args, tracker) => {
                                         tracker.ShowAll();
                                     }));
+        repl.AddCommand(new Command("view-note", "view-note [index::int]", "    View the note with the given index.\n",
+                                    (args, tracker) => {
+                                        try
+                                        {
+                                            Console.WriteLine(tracker.GetEntries()[int.Parse(args[1])].GetContents());
+                                        }
+                                        catch (FormatException)
+                                        {
+                                            Console.WriteLine($"Error: could not parse {args[1]} as an Int.");
+                                            return;
+                                        }
+                                        catch (ArgumentOutOfRangeException)
+                                        {
+                                            Console.WriteLine("Error: No note exists at index {int.Parse(args[i]) - 1}");
+                                            return;
+                                        }
+                                        Console.WriteLine("");
+                                    }));
         // TODO
-        repl.AddCommand(new Command("new", "new [type::string] [ARGS]", "Create a new entry of the given type. Arguments for each are order-sensitive, and are as follows:\nEVENT: name::string, priority::int, location::string, start::string, end::string\nTASK: name::string, priority::int\nNOTE: name::string, priority::int\nStart and end strings must be parseable dates, and the priority must be from 0 through 4./nThe actual contents of the note will be obtained interactively.\n",
+        repl.AddCommand(new Command("new", "new [type::string] [ARGS]", "    Create a new entry of the given type. Arguments for each are order-sensitive, and are as follows:\n      EVENT: name::string, priority::int, location::string, start::string, end::string\n      TASK: name::string, priority::int\n      NOTE: name::string, priority::int\n    Start and end strings must be parseable dates, and the priority must be from 0 through 4.\n    The actual contents of the note will be obtained interactively.\n",
                                     (args, tracker) => {
                                         Console.WriteLine($"Created new {args[1]} entry.");
                                         try
@@ -153,7 +171,7 @@ class Program
                                         }
                                     }));
         // TODO
-        repl.AddCommand(new Command("complete", "complete [type::string] [index::int]", "Marks an item as complete if such an action is supported, silently fails if not.\n",
+        repl.AddCommand(new Command("complete", "complete [type::string] [index::int]", "    Marks an item as complete if such an action is supported.\n",
                                     (args, tracker) => {
                                         int idx;
                                         //Console.WriteLine("complete invoked");
@@ -175,12 +193,12 @@ class Program
                                         
                                     }));
         // TODO
-        repl.AddCommand(new Command("delete", "delete [type::string] [index::int]", "Removes the item at the given index of the given group.\n",
+        repl.AddCommand(new Command("delete", "delete [type::string] [index::int]", "    Removes the item at the given index of the given group.\n",
                                     (args, tracker) => {
                                         Console.WriteLine($"Deleting {args[1]} entry #{args[2]}.\n");
                                     }));
         // DONE
-        repl.AddCommand(new Command("clear", "clear", "Clear the console.\n",
+        repl.AddCommand(new Command("clear", "clear", "    Clear the console.\n",
                                     (args, tracker) => {
                                         Console.Clear();
                                     }));

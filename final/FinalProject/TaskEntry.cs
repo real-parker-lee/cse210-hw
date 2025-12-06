@@ -40,4 +40,9 @@ public class TaskEntry : Entry
     SetDone(true);
     Console.WriteLine($"Checked off task #{idx}: {GetName()}.\n");
   }
+  
+  public override string GetContents()
+  {
+    return "Error: entries of type 'TASK' do not have contents.";
+  }
 }
