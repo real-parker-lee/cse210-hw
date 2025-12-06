@@ -9,21 +9,21 @@ public class Note
   
   public void SetData(string plain)
   {
-    _data = Encode(plain);
+    _data = Note.Encode(plain);
   }
   
   public string GetDecodedData()
   {
-    return Decode(GetEncodedData());
+    return Note.Decode(GetEncodedData());
   }
   
-  public string Encode(string plain)
+  public static string Encode(string plain)
   {
     byte[] plainBytes = System.Text.Encoding.UTF8.GetBytes(plain);
     return System.Convert.ToBase64String(plainBytes);
   }
   
-  public string Decode(string data)
+  public static string Decode(string data)
   {
     byte[] encodedBytes = System.Convert.FromBase64String(data);
     return System.Text.Encoding.UTF8.GetString(encodedBytes);
@@ -50,12 +50,11 @@ public class Note
   }
   
   // Invoke an editor which can be exited using 
-  public void Edit(string title)
+  public void Edit(string title, string defaultMessage)
   {
     Console.Clear();
-    Console.WriteLine($"{title}");
+    Console.WriteLine($"Editing Note: \"{title}\"");
     
-    string defaultMessage = "Edit Me!";
     Console.Write(defaultMessage);
     
     string input = defaultMessage;
@@ -94,5 +93,6 @@ public class Note
       }
     }
     SetData(input);
+    Console.WriteLine(GetEncodedData());
   }
 }

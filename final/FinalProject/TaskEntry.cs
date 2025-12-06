@@ -45,4 +45,10 @@ public class TaskEntry : Entry
   {
     return "Error: entries of type 'TASK' do not have contents.";
   }
+  
+  public override void Show()
+  {
+    string status = (IsDone()) ? "(Completed)" : "(Not Done)";
+    Console.WriteLine($"TASK: {GetName()} ({GetPriority().AsString()})\n{status}\n");
+  }
 }

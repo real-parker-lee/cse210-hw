@@ -2,11 +2,6 @@ class Program
 {
     static void Main(string[] args)
     {
-        
-        Note n = new Note();
-        n.SetData("test");
-        n.Edit("test note");
-        Console.WriteLine(n.GetDecodedData());
         /*For some context, I taught myself a language called Common Lisp, which is a beautiful and powerful language with first-class functions, powerful macros, and multiple-inheritance. It changed the way I thought about what code could be. My implementation of this program was informed by commonplace Lisp conventions, which you will see later in this file.
          
         To be honest, the Repl class and the Command class are cool enough to be a stand-alone library. It affords total control to the developer implementing the UI, defines all data in one place, and maintains separation from classes that hold data and classes that show the UI. I'm really proud of those classes! Just replace any occurence of EntryHandler with a custom class and it should work.
@@ -103,23 +98,29 @@ class Program
                                     (args, tracker) => {
                                         tracker.ShowAll();
                                     }));
-        repl.AddCommand(new Command("view-note", "view-note [index::int]", "    View the note with the given index.\n",
+        repl.AddCommand(new Command("view", "view [type::string] [index::int]", "    View the entry with the given index in more detail.\n",
                                     (args, tracker) => {
+                                        if (args.Count() < 3)
+                                        {
+                                            Console.WriteLine($"Error: insufficient number of arguments.\n");
+                                        }
+                                        
+                                        // validate index
                                         try
                                         {
-                                            Console.WriteLine(tracker.GetEntries()[int.Parse(args[1])].GetContents());
+                                            int vIdx = int.Parse(args[2]) - 1;
+                                            tracker.GetEntries()[vIdx].Show();
                                         }
                                         catch (FormatException)
                                         {
-                                            Console.WriteLine($"Error: could not parse {args[1]} as an Int.");
+                                            Console.WriteLine($"Error: could not parse {args[2]} as an Integer.\n");
                                             return;
                                         }
                                         catch (ArgumentOutOfRangeException)
                                         {
-                                            Console.WriteLine("Error: No note exists at index {int.Parse(args[i]) - 1}");
-                                            return;
+                                            Console.WriteLine($"Error: index {int.Parse(args[2]) - 1} is out of range. There is no entry #{int.Parse(args[2])} in {args[1]}s.");
                                         }
-                                        Console.WriteLine("");
+                                        
                                     }));
         // TODO
         repl.AddCommand(new Command("new", "new [type::string] [ARGS]", "    Create a new entry of the given type. Arguments for each are order-sensitive, and are as follows:\n      EVENT: name::string, priority::int, location::string, start::string, end::string\n      TASK: name::string, priority::int\n      NOTE: name::string, priority::int\n    Start and end strings must be parseable dates, and the priority must be from 0 through 4.\n    The actual contents of the note will be obtained interactively.\n",
@@ -156,7 +157,7 @@ class Program
                                                     
                                                     //Are we still in this block? if so, make a new Task:
                                                     tracker.AddEntry(new TaskEntry(name, Priority.FromNumber(priorityInt), false));
-                                                    Console.WriteLine($"Created new {args[1]} entry.");
+                                                    Console.WriteLine($"Created new Task.\n");
                                                     break;
                                                 case "EVENT":
                                                     if (args.Count() < 7)
@@ -215,11 +216,46 @@ class Program
                                                         }
                                                         
                                                         tracker.AddEntry(new EventEntry(eventName, p, eventLocation, start, end));
+                                                        Console.WriteLine("Created new Event.\n");
                                                     }
                                                     break;
                                                 
                                                 case "NOTE":
-                                                    // this one is special. we need to invoke an interactive editor.
+                                                    if (args.Count() <= 3)
+                                                    {
+                                                        Console.WriteLine($"Error: insufficient number of arguments.\n");
+                                                        return;
+                                                    }
+                                                    string noteName = args[2];
+                                                    Priority noteP;
+                                                    try
+                                                    {
+                                                        noteP = Priority.FromNumber(int.Parse(args[3]));
+                                                    }
+                                                    catch (FormatException)
+                                                    {
+                                                        Console.WriteLine($"Error: could not parse {args[3]} as Integer.\n");
+                                                        return;
+                                                    }
+                                                    
+                                                    // check if int corresponds to valid priority
+                                                    try
+                                                    {
+                                                       int throwaway = int.Parse(noteP.AsString());
+                                                       Console.WriteLine($"Error: The integer {args[3]} does not correspond to a valid priority.\n");
+                                                    }
+                                                    catch (FormatException)
+                                                    {
+                                                        // edit a note
+                                                        Note note = new Note();
+                                                        note.Edit(noteName, "Edit Me, then press ESC when done!");
+                                                        Console.Clear();
+                                                        string b64Data = note.GetEncodedData();
+                                                        Console.WriteLine($"Encoded: {b64Data}");
+                                                        
+                                                        tracker.AddEntry(new NoteEntry(noteName, noteP, b64Data, DateTime.Now));
+                                                        Console.WriteLine("Created new Note.\n");
+                                                    }
                                                     break;
                                                 default:
                                                     Console.WriteLine("Error: unrecognized entry type: {args[1]}.\n");
@@ -248,7 +284,7 @@ class Program
                                         }
                                         catch (ArgumentOutOfRangeException)
                                         {
-                                            Console.WriteLine($"Error: index {int.Parse(args[2]) - 1} is out of range. There is no entry #{args[2]} in this entry group.\n");
+                                            Console.WriteLine($"Error: index {int.Parse(args[2]) - 1} is out of range. There is no entry #{args[2]} in {args[1]}s.\n");
                                             return;
                                         }
                                         
@@ -283,7 +319,7 @@ class Program
                                         }
                                         catch (ArgumentOutOfRangeException)
                                         {
-                                            Console.WriteLine($"Error: there is no {args[1]} at index {args[2]}.\n");
+                                            Console.WriteLine($"Error: index {delIdx} is out of range. There is no entry #{delIdx + 1} in {args[1]}s\n");
                                             return;
                                         }
                                     }));

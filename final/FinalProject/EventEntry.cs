@@ -67,4 +67,9 @@ public class EventEntry : Entry
   {
     return "Error: Entries of type 'EVENT' do not have contents.";
   }
+  
+  public override void Show()
+  {
+    Console.WriteLine($"EVENT: {GetName()}\n\nFrom: {GetStartDate}\nTo:   {GetEndDate()}\nAt:   {GetLocation()}\n{GetPriority().AsString()}\n");
+  }
 }

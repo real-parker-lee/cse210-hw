@@ -65,4 +65,9 @@ public class Entry
   {
     return "lkafdkjh";
   }
+  
+  public virtual void Show()
+  {
+    return;
+  }
 }

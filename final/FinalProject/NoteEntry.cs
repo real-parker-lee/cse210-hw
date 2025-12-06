@@ -10,12 +10,14 @@ public class NoteEntry : Entry
   
   public void SetContents(string c)
   {
-    _contents = c;
+    _contents = Note.Encode(c);
   }
   
   public override string GetContents()
   {
-    return _contents;
+    string c = Note.Decode(_contents);
+    //Console.WriteLine($"DECODED: {c}");
+    return c;
   }
   
   public DateTime GetCreationDate()
@@ -27,6 +29,7 @@ public class NoteEntry : Entry
   :base(name, p)
   {
     SetCreationDate(created);
+    SetContents(contents);
   }
   
   public NoteEntry(string name, DateTime c)
@@ -42,7 +45,7 @@ public class NoteEntry : Entry
   
   public override string Stringify()
   {
-    return $"";
+    return $"{GetCreationDate()} : {GetName()}";
   }
   
   public override void CheckOff(int idx)
@@ -54,5 +57,10 @@ public class NoteEntry : Entry
   {
     Console.WriteLine("Error: cannot check off a note.");
     return;
+  }
+  
+  public override void Show()
+  {
+    Console.WriteLine($"NOTE: {GetName()} (Created {GetCreationDate()})\n\n{Note.Decode(GetContents())}\n");
   }
 }
