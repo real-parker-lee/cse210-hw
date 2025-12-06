@@ -26,7 +26,7 @@ public class TaskEntry : Entry
 
   public override string Serialize()
   {
-      return $"TASK|{base.GetName()}|{base.GetPriority()}|{IsDone()}";
+      return $"TASK|{base.GetName()}|{base.GetPriority().AsInt()}|{IsDone()}";
   }
   
   public override void CheckOff()

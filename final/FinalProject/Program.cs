@@ -17,10 +17,17 @@ class Program
         // (another thing I borrowed from LISP, which invented the concept as far as I know).
         Repl repl = new Repl("> ", "Welcome to the Docket REPL!\nType 'help' to get a list of commands.\n");
         
+        // HACK: global string to store all serialized data during write process. needed to get around the single-tracker limitation.
+        string savePart = "";
+        // HACK: count number of times a command has evaluated to implement additional logic
+        int evalCount = 0;
+        
         // define all commands, their behavior, and their documentations.
         // TODO
         repl.AddCommand(new Command("load", "load [path::string]", "    Load a docket from the file at the given path.\n",
                                     (args, tracker) => {
+                                        evalCount++;
+                                        evalCount = evalCount % 3;
                                         string path = "";
                                         try
                                         {
@@ -33,13 +40,57 @@ class Program
                                         }
                                         repl.SetCurrentPath(args[1]);
                                         Console.WriteLine($"Loading {tracker.GetGroupName()} from file at {repl.GetCurrentPath()}.");
+                                        try
+                                        {
+                                            string[] lines = File.ReadAllLines(repl.GetCurrentPath());
+                                        }
+                                        catch (FileNotFoundException)
+                                        {
+                                            Console.WriteLine($"Error: no file found at path '{repl.GetCurrentPath()}'");
+                                            return;
+                                        }
                                         // invoke the static deserialize method from EntryTracker to set the repl's tracker in bulk.
                                     }));
         // TODO
         repl.AddCommand(new Command("save", "save [?path::string]", "    Save the current docket to the file at [path], or to the last loaded file if no path is provided.\n",
                                     (args, tracker) => {
-                                        Console.WriteLine("Invoked save");
-                                        // make sure to concatenate each entryTracker's serialized data.
+                                        if (args.Count() == 2)
+                                        {
+                                            tracker.SetCurrentPath(args[1]);
+                                            repl.SetCurrentPath(args[1]); // yeah i know this is redundant. dont care.
+                                            savePart = savePart + tracker.Serialize();
+                                            //Console.WriteLine(savePart);
+                                        }
+                                        else if (args.Count() == 1)
+                                        {
+                                            savePart = savePart + tracker.Serialize();
+                                            //Console.WriteLine(savePart);
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("Error: Invalid number of arguments.\n");
+                                        }
+                                        
+                                        try
+                                        {
+                                            File.WriteAllText(repl.GetCurrentPath(), savePart);
+                                            evalCount++;
+                                            evalCount = evalCount % 3;
+                                            if (evalCount == 0)
+                                            {
+                                                savePart = ""; // erase SavePart only after the last entry type has been saved to the file.
+                                            }
+                                        }
+                                        catch (FileNotFoundException)
+                                        {
+                                            Console.WriteLine($"Error: no file found at path '{repl.GetCurrentPath()}'.\n");
+                                            return;
+                                        }
+                                        catch (AccessViolationException)
+                                        {
+                                            Console.WriteLine("Error: file access denied.\n");
+                                            return;
+                                        }
                                     }));
         // DONE
         repl.AddCommand(new Command("list", "list [?type::string]", "    list all entries of the given [type], or all entries if no type is given.\n    Type can be one of the following literals: 'event', 'note', or 'task'\n",
@@ -67,7 +118,6 @@ class Program
         // TODO
         repl.AddCommand(new Command("new", "new [type::string] [ARGS]", "    Create a new entry of the given type. Arguments for each are order-sensitive, and are as follows:\n      EVENT: name::string, priority::int, location::string, start::string, end::string\n      TASK: name::string, priority::int\n      NOTE: name::string, priority::int\n    Start and end strings must be parseable dates, and the priority must be from 0 through 4.\n    The actual contents of the note will be obtained interactively.\n",
                                     (args, tracker) => {
-                                        Console.WriteLine($"Created new {args[1]} entry.");
                                         try
                                         {
                                             switch (args[1].ToUpper())
@@ -100,6 +150,7 @@ class Program
                                                     
                                                     //Are we still in this block? if so, make a new Task:
                                                     tracker.AddEntry(new TaskEntry(name, Priority.FromNumber(priorityInt), false));
+                                                    Console.WriteLine($"Created new {args[1]} entry.");
                                                     break;
                                                 case "EVENT":
                                                     if (args.Count() < 7)

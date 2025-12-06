@@ -1,5 +1,3 @@
-using System.IO;
-
 public class EntryTracker
 {
   private string _groupName;
@@ -60,21 +58,11 @@ public class EntryTracker
     string content = "";
     foreach (Entry e in GetEntries())
     {
-      content = content + e.Serialize();
+      content = content + e.Serialize() + "\n";
     }
     // write to file at currentPath.
     return content;
     
-  }
-  
-  public string Serialize(string path)
-  {
-    string content = "";
-    foreach (Entry e in GetEntries())
-    {
-      content = content + e.Serialize();
-    }
-    return content;
   }
   
   public static List<EntryTracker> Deserialize(string path)

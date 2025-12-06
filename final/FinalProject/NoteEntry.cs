@@ -37,7 +37,7 @@ public class NoteEntry : Entry
   
   public override string Serialize()
   {
-    return $"";
+    return $"NOTE|{base.GetName()}|{base.GetPriority().AsInt()}|{GetCreationDate()}|{GetContents()}";
   }
   
   public override string Stringify()
