@@ -17,15 +17,11 @@ class Program
         // (another thing I borrowed from LISP, which invented the concept as far as I know).
         Repl repl = new Repl("> ", "Welcome to the Docket REPL!\nType 'help' to get a list of commands.\n");
         
-        // HACK: count number of times a command has evaluated to implement additional logic
-        int evalCount = 0;
-        
         // define all commands, their behavior, and their documentations.
         // DONE
         repl.AddCommand(new Command("load", "load [path::string]", "    Load a docket from the file at the given path.\n",
                                     (args, tracker) => {
-                                        evalCount++;
-                                        evalCount = evalCount % 3;
+                                        repl.IncrementEvalCount();
                                         string path = "";
                                         try
                                         {
@@ -37,7 +33,11 @@ class Program
                                             return;
                                         }
                                         repl.SetCurrentPath(args[1]);
-                                        Console.WriteLine($"Loading {tracker.GetGroupName()} from file at {repl.GetCurrentPath()}.");
+                                        Console.WriteLine($"Loading all {tracker.GetGroupName()} from file at {repl.GetCurrentPath()}.");
+                                        if (repl.GetEvalCount() == 0)
+                                        {
+                                            Console.WriteLine("");
+                                        }
                                         try
                                         {
                                             string[] lines = File.ReadAllLines(repl.GetCurrentPath());
@@ -71,12 +71,11 @@ class Program
                                             Console.WriteLine("Error: Invalid number of arguments.\n");
                                         }
                                         
+                                        repl.IncrementEvalCount();
                                         try
                                         {
                                             File.WriteAllText(repl.GetCurrentPath(), repl.GetSaveBuffer());
-                                            evalCount++;
-                                            evalCount = evalCount % 3;
-                                            if (evalCount == 0)
+                                            if (repl.GetEvalCount() == 0)
                                             {
                                                 repl.SetSaveBuffer("");
                                                 //savePart = ""; // erase SavePart only after the last entry type has been saved to the file.
@@ -92,6 +91,10 @@ class Program
                                             Console.WriteLine("Error: file access denied.\n");
                                             return;
                                         }
+                                        if (repl.GetEvalCount() == 0)
+                                        {
+                                            Console.WriteLine($"Saved all entries to file at '{repl.GetCurrentPath()}'\n");
+                                        }
                                     }));
         // DONE
         repl.AddCommand(new Command("list", "list [?type::string]", "    list all entries of the given [type], or all entries if no type is given.\n    Type can be one of the following literals: 'event', 'note', or 'task'\n",
@@ -102,7 +105,10 @@ class Program
                                     (args, tracker) => {
                                         if (args.Count() < 3)
                                         {
-                                            Console.WriteLine($"Error: insufficient number of arguments.\n");
+                                            repl.IncrementEvalCount();
+                                            if (repl.GetEvalCount() == 0)
+                                                Console.WriteLine($"Error: insufficient number of arguments.\n");
+                                                return;
                                         }
                                         
                                         // validate index
@@ -120,7 +126,6 @@ class Program
                                         {
                                             Console.WriteLine($"Error: index {int.Parse(args[2]) - 1} is out of range. There is no entry #{int.Parse(args[2])} in {args[1]}s.");
                                         }
-                                        
                                     }));
         // TODO
         repl.AddCommand(new Command("new", "new [type::string] [ARGS]", "    Create a new entry of the given type. Arguments for each are order-sensitive, and are as follows:\n      EVENT: name::string, priority::int, location::string, start::string, end::string\n      TASK: name::string, priority::int\n      NOTE: name::string, priority::int\n    Start and end strings must be parseable dates, and the priority must be from 0 through 4.\n    The actual contents of the note will be obtained interactively.\n",

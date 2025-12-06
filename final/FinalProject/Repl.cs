@@ -7,6 +7,17 @@ public class Repl
   private List<EntryTracker> _trackers = new List<EntryTracker>();
   private string _currentPath = "docket.save";
   private string _saveBuffer = ""; // use to build serialized data before saving, to get around the Eval function running 3x.
+  private int _evalCount = 0; // hack to track how many times we've repeated a command.
+  
+  public int GetEvalCount()
+  {
+    return _evalCount % 3;
+  }
+  
+  public void IncrementEvalCount()
+  {
+    _evalCount = (_evalCount + 1) % 3;
+  }
   
   public string GetSaveBuffer()
   {
