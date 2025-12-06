@@ -5,7 +5,7 @@ Docket is designed to be familiar to those who've used a REPL (Read-Evaluate-Pri
 
 For example, to load a docket, one would use the following command
 ```
-load docket.save
+load example.docket
 ```
 # Classes:
 ## Repl
