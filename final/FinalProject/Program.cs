@@ -161,16 +161,16 @@ class Program
                                                     // this one is special. we need to invoke an interactive editor.
                                                     break;
                                                 default:
-                                                    Console.WriteLine("Error: unsupported entry type: {args[1]}");
+                                                    Console.WriteLine("Error: unrecognized entry type: {args[1]}.\n");
                                                     return;
                                             }
                                         }
                                         catch (ArgumentOutOfRangeException)
                                         {
-                                            Console.WriteLine($"name: {args[2]}, priority: {args[3]}");
+                                            Console.WriteLine($"Error: insufficient number of arguments.\n");
                                         }
                                     }));
-        // TODO
+        // DONE
         repl.AddCommand(new Command("complete", "complete [type::string] [index::int]", "    Marks an item as complete if such an action is supported.\n",
                                     (args, tracker) => {
                                         int idx;
@@ -182,20 +182,49 @@ class Program
                                         }
                                         catch (FormatException)
                                         {
-                                            Console.WriteLine($"Error: could not parse {args[2]} as an integer.");
+                                            Console.WriteLine($"Error: could not parse {args[2]} as an Int.\n");
                                             return;
                                         }
                                         catch (ArgumentOutOfRangeException)
                                         {
-                                            Console.WriteLine($"Error: index {int.Parse(args[2]) - 1} is out of range. There is no entry #{args[2]} in this entry group.");
+                                            Console.WriteLine($"Error: index {int.Parse(args[2]) - 1} is out of range. There is no entry #{args[2]} in this entry group.\n");
                                             return;
                                         }
                                         
                                     }));
-        // TODO
+        // DONE
         repl.AddCommand(new Command("delete", "delete [type::string] [index::int]", "    Removes the item at the given index of the given group.\n",
                                     (args, tracker) => {
-                                        Console.WriteLine($"Deleting {args[1]} entry #{args[2]}.\n");
+                                        // check for correct number of args.
+                                        if (args.Count() < 3)
+                                        {
+                                            Console.WriteLine("Error: insufficient amount of arguments.\n");
+                                            return;
+                                        }
+
+                                        // check that index is parseable
+                                        int delIdx = -1;
+                                        try
+                                        {
+                                            delIdx = int.Parse(args[2]) - 1;
+                                        }
+                                        catch (FormatException)
+                                        {
+                                            Console.WriteLine($"Error: could not parse '{args[2]}' as an Int.\n");
+                                            return;
+                                        }
+                                        
+                                        // remove item
+                                        try
+                                        {
+                                            tracker.GetEntries().RemoveAt(delIdx);
+                                            Console.WriteLine($"Deleted {args[1]} #{delIdx + 1}.\n");
+                                        }
+                                        catch (ArgumentOutOfRangeException)
+                                        {
+                                            Console.WriteLine($"Error: there is no {args[1]} at index {args[2]}.\n");
+                                            return;
+                                        }
                                     }));
         // DONE
         repl.AddCommand(new Command("clear", "clear", "    Clear the console.\n",
