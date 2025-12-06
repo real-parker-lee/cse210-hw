@@ -17,13 +17,11 @@ class Program
         // (another thing I borrowed from LISP, which invented the concept as far as I know).
         Repl repl = new Repl("> ", "Welcome to the Docket REPL!\nType 'help' to get a list of commands.\n");
         
-        // HACK: global string to store all serialized data during write process. needed to get around the single-tracker limitation.
-        string savePart = "";
         // HACK: count number of times a command has evaluated to implement additional logic
         int evalCount = 0;
         
         // define all commands, their behavior, and their documentations.
-        // TODO
+        // DONE
         repl.AddCommand(new Command("load", "load [path::string]", "    Load a docket from the file at the given path.\n",
                                     (args, tracker) => {
                                         evalCount++;
@@ -59,12 +57,13 @@ class Program
                                         {
                                             tracker.SetCurrentPath(args[1]);
                                             repl.SetCurrentPath(args[1]); // yeah i know this is redundant. dont care.
-                                            savePart = savePart + tracker.Serialize();
+                                            repl.AppendToSaveBuffer(tracker.Serialize());
                                             //Console.WriteLine(savePart);
                                         }
                                         else if (args.Count() == 1)
                                         {
-                                            savePart = savePart + tracker.Serialize();
+                                            repl.AppendToSaveBuffer(tracker.Serialize());
+                                            //savePart = savePart + tracker.Serialize();
                                             //Console.WriteLine(savePart);
                                         }
                                         else
@@ -74,12 +73,13 @@ class Program
                                         
                                         try
                                         {
-                                            File.WriteAllText(repl.GetCurrentPath(), savePart);
+                                            File.WriteAllText(repl.GetCurrentPath(), repl.GetSaveBuffer());
                                             evalCount++;
                                             evalCount = evalCount % 3;
                                             if (evalCount == 0)
                                             {
-                                                savePart = ""; // erase SavePart only after the last entry type has been saved to the file.
+                                                repl.SetSaveBuffer("");
+                                                //savePart = ""; // erase SavePart only after the last entry type has been saved to the file.
                                             }
                                         }
                                         catch (FileNotFoundException)

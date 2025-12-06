@@ -6,6 +6,22 @@ public class Repl
   private bool _doExit = false;
   private List<EntryTracker> _trackers = new List<EntryTracker>();
   private string _currentPath = "docket.save";
+  private string _saveBuffer = ""; // use to build serialized data before saving, to get around the Eval function running 3x.
+  
+  public string GetSaveBuffer()
+  {
+    return _saveBuffer;
+  }
+  
+  public void SetSaveBuffer(string data)
+  {
+    _saveBuffer = data;
+  }
+  
+  public void AppendToSaveBuffer(string part)
+  {
+    _saveBuffer = _saveBuffer + part;
+  }
   
   public string GetCurrentPath()
   {
