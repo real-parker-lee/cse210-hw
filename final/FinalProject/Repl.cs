@@ -5,7 +5,7 @@ public class Repl
   private List<Command> _commands = new List<Command>();
   private bool _doExit = false;
   private List<EntryTracker> _trackers = new List<EntryTracker>();
-  private string _currentPath = "docket.save";
+  private string _currentPath = "example.docket";
   private string _saveBuffer = ""; // use to build serialized data before saving, to get around the Eval function running 3x.
   private int _evalCount = 0; // hack to track how many times we've repeated a command.
   

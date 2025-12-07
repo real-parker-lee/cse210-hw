@@ -89,7 +89,7 @@ public class EntryTracker
           trackers[2].AddEntry(new NoteEntry(data[1], Priority.FromNumber(int.Parse(data[2])), data[4], DateTime.Parse(data[3])));
           continue;
         default:
-          Console.WriteLine($"ERROR: Malformed data:\n{l}");
+          Console.WriteLine($"Error: Malformed data: '{l}'");
           break;
       }
     }

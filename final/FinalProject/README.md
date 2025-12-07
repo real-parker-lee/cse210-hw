@@ -28,6 +28,7 @@ a collection of events, responsible for the serialization of all events it conta
 A small utility class for defining, representing, and validating priorities.
 
 # The Docket file format:
+A file with the .docket extension is a plaintext file that stores data in an AWK-able format, should you wish to write your own tool for interacting with these files.
 Each line represents an `Entry`, with each attribute of the entry split by a pipe symbol. The first field of each entry is always an all-caps string denoting its type, the second field is always the name of the entry, and the third is always an integer representing the assigned priority. After that, the fields become more entry-type-dependant.
 ## Tasks
 The remaining entries and their types are as follows:
@@ -61,9 +62,9 @@ if (repl.GetEvalCounter == 0)
 ```
 Internally, the `evalCounter` is an int mod 3, meaning that during the first loop, the eval-counter is 1, during the second it's 2, and during the third its `3 % 3` which is 0. Since there are only three entry types, this works. If you plan to add a new entry type, you'll need to change the modulus in `Repl.cs`.
 
-## some tricks
-### 1. Checking igf a priority is valid
-you can easily check if an int corresponds to a valid Priority with the following code:
+## Some Tricks
+### 1. Checking if a priority is valid
+You can easily check if an int corresponds to a valid Priority with the following code:
 ```c#
 // assume the integer variable priorityInt is obtained earlier in the body.
 try
@@ -78,4 +79,4 @@ catch (FormatException)
 ```
 This works because the `AsString` method returns the integer it was passed as a string if that integer doesn't correspond to a valid priority, so successfully parsing the output as an int means the int wasn't a valid priority.
 ### 2. persisting data across Eval calls
-the `Repl` class has an attribute containing a string that acts as a buffer for yet-to-be-saved data. You could use this in your commands to persist data across eval calls, or modify the repl class to include your own buffer. Whatever you do, make sure you erase that buffer on the last eval call.
+The `Repl` class has an attribute containing a string that acts as a buffer for yet-to-be-saved data. You could use this in your commands to persist data across eval calls, or modify the repl class to include your own buffer. Whatever you do, make sure you erase that buffer on the *last* eval call.

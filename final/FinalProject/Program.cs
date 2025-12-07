@@ -32,6 +32,14 @@ class Program
                                             Console.WriteLine("ERROR: insufficient number of arguments. MUST specify a path to load from.\n");
                                             return;
                                         }
+                                        if (args[1].Substring(args[1].Length - 7) != ".docket")
+                                        {
+                                            if (repl.GetEvalCount() == 1)
+                                            {
+                                                Console.WriteLine($"Error: file has improper extension. Data is likely unreadable. Aborting Load.\n");
+                                            }
+                                            return; // skip all loading steps, not just the first.
+                                        }
                                         repl.SetCurrentPath(args[1]);
                                         Console.WriteLine($"Loading all {tracker.GetGroupName()} from file at {repl.GetCurrentPath()}.");
                                         if (repl.GetEvalCount() == 0)
@@ -45,16 +53,29 @@ class Program
                                         }
                                         catch (FileNotFoundException)
                                         {
-                                            Console.WriteLine($"Error: no file found at path '{repl.GetCurrentPath()}'");
-                                            return;
+                                            if (repl.GetEvalCount() == 0)
+                                            {
+                                                Console.WriteLine($"Error: no file found at path '{repl.GetCurrentPath()}'");
+                                                return;
+                                            }
                                         }
                                         // invoke the static deserialize method from EntryTracker to set the repl's tracker in bulk.
                                     }));
         // DONE
         repl.AddCommand(new Command("save", "save [?path::string]", "    Save the current docket to the file at [path], or to the last loaded file if no path is provided.\n",
                                     (args, tracker) => {
+                                        repl.IncrementEvalCount();
                                         if (args.Count() == 2)
                                         {
+                                            if (args[1].Substring(args[1].Length - 7) != ".docket")
+                                            {
+                                                ReadOnlySpan<char> ext = Path.GetExtension(args[1]);
+                                                if (repl.GetEvalCount() == 0)
+                                                {
+                                                    Console.WriteLine($"Error: unsupported file extension '{ext.ToString()}'\n");
+                                                    return;
+                                                }
+                                            }
                                             tracker.SetCurrentPath(args[1]);
                                             repl.SetCurrentPath(args[1]); // yeah i know this is redundant. dont care.
                                             repl.AppendToSaveBuffer(tracker.Serialize());
@@ -71,7 +92,6 @@ class Program
                                             Console.WriteLine("Error: Invalid number of arguments.\n");
                                         }
                                         
-                                        repl.IncrementEvalCount();
                                         try
                                         {
                                             File.WriteAllText(repl.GetCurrentPath(), repl.GetSaveBuffer());
