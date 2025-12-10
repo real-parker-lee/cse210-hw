@@ -212,7 +212,7 @@ public class Repl
     for (int i = 0; i < argList.Count(); i++)
     {
       args[i] = argList[i];
-      Console.WriteLine($"{i}: {args[i]}");
+      // Console.WriteLine($"{i}: {args[i]}");
     }
     
     // check for special commands
