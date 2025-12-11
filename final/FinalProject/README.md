@@ -3,7 +3,7 @@ Docket is a program that lets you save and load things called "dockets": a plain
 
 Docket is designed to be familiar to those who've used a REPL (Read-Evaluate-Print Loop) before. This design paradigm makes for a flexible user interface that allows a user to do anything the program lets you do in one command.
 
-For example, to load a docket, one would use the following command
+For example, to load a docket, one would use the following command:
 ```
 load example.docket
 ```
