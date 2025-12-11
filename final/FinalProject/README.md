@@ -1,5 +1,5 @@
 # Docket: a CLI productivity helper
-docket is a program that lets you save and load things called "dockets": a plain-text, AWK-able file containing a sort of calendar, a list of tasks, and some notes.
+Docket is a program that lets you save and load things called "dockets": a plain-text, AWK-able file containing a sort of calendar, a list of tasks, and some notes.
 
 Docket is designed to be familiar to those who've used a REPL (Read-Evaluate-Print Loop) before. This design paradigm makes for a flexible user interface that allows a user to do anything the program lets you do in one command.
 
